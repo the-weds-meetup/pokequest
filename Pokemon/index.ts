@@ -38,8 +38,8 @@ app.get('/pokemon/random/:count', (req, res) => {
 });
 
 app.listen(PORT, async () => {
-  POKEMON = await getPokemonList().catch(() => {
-    console.log('An error occured when fetching');
+  POKEMON = await getPokemonList().catch((error: Error) => {
+    console.log('An error occured when fetching', error);
     return [];
   });
 
