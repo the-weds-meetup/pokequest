@@ -1,0 +1,106 @@
+[
+  {
+    "id": 1,
+    "name": "Bulbasaur"
+  },
+  {
+    "id": 4,
+    "name": "Charmander"
+  },
+  {
+    "id": 7,
+    "name": "Squirtle"
+  },
+  {
+    "id": 10,
+    "name": "Caterpie"
+  },
+  {
+    "id": 13,
+    "name": "Weedle"
+  },
+  {
+    "id": 16,
+    "name": "Pidgey"
+  },
+  {
+    "id": 19,
+    "name": "Rattata"
+  },
+  {
+    "id": 20,
+    "name": "Raticate"
+  },
+  {
+    "id": 21,
+    "name": "Spearow"
+  },
+  {
+    "id": 25,
+    "name": "Pikachu"
+  },
+  {
+    "id": 27,
+    "name": "Sandshrew"
+  },
+  {
+    "id": 37,
+    "name": "Vulpix"
+  },
+  {
+    "id": 39,
+    "name": "Jigglypuff"
+  },
+  {
+    "id": 41,
+    "name": "Zubat"
+  },
+  {
+    "id": 43,
+    "name": "Oddish"
+  },
+  {
+    "id": 58,
+    "name": "Growlithe"
+  },
+  {
+    "id": 74,
+    "name": "Geodude"
+  },
+  {
+    "id": 77,
+    "name": "Ponyta"
+  },
+  {
+    "id": 81,
+    "name": "Magnemite"
+  },
+  {
+    "id": 83,
+    "name": "Farfetch'd"
+  },
+  {
+    "id": 90,
+    "name": "Shellder"
+  },
+  {
+    "id": 113,
+    "name": "Chansey"
+  },
+  {
+    "id": 115,
+    "name": "Kangaskhan"
+  },
+  {
+    "id": 132,
+    "name": "Ditto"
+  },
+  {
+    "id": 133,
+    "name": "Eevee"
+  },
+  {
+    "id": 147,
+    "name": "Dratini"
+  }
+]
