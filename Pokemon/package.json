@@ -1,6 +1,7 @@
 {
   "name": "pokemon",
   "version": "0.0.1",
+  "private": true,
   "main": "index.js",
   "author": "Amos <alphatrl1997@gmail.com>",
   "license": "MIT",
