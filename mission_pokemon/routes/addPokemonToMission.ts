@@ -21,17 +21,20 @@ const connectionString = isProduction
       port: port,
     };
 
-const addMission = async (_req: Request, _res: Response): Promise<void> => {
-  const { start_time, end_time } = _req.body;
+const addPokemonToMission = async (
+  _req: Request,
+  _res: Response
+): Promise<void> => {
+  const { poke_id, mission_id } = _req.body;
 
-  if (!start_time || !end_time) {
+  if (!poke_id || !mission_id) {
     _res.status(401).send('Missing variables');
   }
 
   const query = {
     text:
-      'INSERT INTO mission(start_time, end_time, creation_time) VALUES($1, $2, $3) RETURNING *',
-    values: [start_time, end_time, Date.now()],
+      'INSERT INTO mission_pokemon(mission_id, pokemon_id) VALUES($1, $2) RETURNING *',
+    values: [mission_id, poke_id],
   };
 
   const client = new Client(connectionString);
@@ -40,10 +43,9 @@ const addMission = async (_req: Request, _res: Response): Promise<void> => {
   await client
     .query(query)
     .then((results) => {
-      const mission = results.rows[0];
       _res.status(201).send({
         time: Date.now(),
-        data: mission,
+        data: results.rows[0],
       });
     })
     .catch((error) => {
@@ -53,4 +55,4 @@ const addMission = async (_req: Request, _res: Response): Promise<void> => {
     .finally(() => client.end());
 };
 
-export default addMission;
+export default addPokemonToMission;
