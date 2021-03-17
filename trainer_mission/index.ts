@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 8003;
 
 app.use(express.json());
 
-app.get('/', (req, res) => res.send('Mission Pokemons Microservice'));
+app.get('/', (req, res) => res.send('Trainer Mission Microservice'));
 
 app.get('/quest/trainer/:trainer', getTrainerMission);
 app.get('/quest/mission/:mission', getMissionTrainers);
@@ -17,6 +17,6 @@ app.post('/quest', joinMission);
 
 app.listen(PORT, async () => {
   console.log(
-    `⚡️[server]: Mission Pokemon Server is running at https://localhost:${PORT}`
+    `⚡️[server]: Trainer's Mission Server is running at https://localhost:${PORT}`
   );
 });
