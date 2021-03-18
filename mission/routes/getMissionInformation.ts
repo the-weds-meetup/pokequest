@@ -4,6 +4,7 @@ import { Client } from 'pg';
 
 dotenv.config();
 const isProduction = process.env.NODE_ENV === 'production';
+
 const port = parseInt(`${process.env.DATABASE_PORT}`) || 5432;
 
 const connectionString = isProduction
@@ -21,18 +22,13 @@ const connectionString = isProduction
       port: port,
     };
 
-const getMissionPokemon = async (
+const returnAllMissions = async (
   _req: Request,
   _res: Response
 ): Promise<void> => {
-  const { mission_id } = _req.body;
-
-  if (!mission_id) {
-    _res.status(401).send('Missing variables');
-  }
-
+  const { mission_id } = _req.params;
   const query = {
-    text: 'SELECT * FROM mission_pokemon WHERE mission_id = $1',
+    text: 'SELECT * FROM mission WHERE id = $1',
     values: [mission_id],
   };
 
@@ -42,13 +38,14 @@ const getMissionPokemon = async (
   await client
     .query(query)
     .then((results) => {
+      console.log(results);
       _res.status(201).send({
         time: Date.now(),
-        data: results.rows,
+        data: results.rows[0],
       });
     })
-    .catch((error: Error) => {
-      console.log('[Mission Server]', error);
+    .catch((error) => {
+      console.log(error);
       _res.status(418).send({
         data: error.message,
       });
@@ -56,4 +53,4 @@ const getMissionPokemon = async (
     .finally(() => client.end());
 };
 
-export default getMissionPokemon;
+export default returnAllMissions;

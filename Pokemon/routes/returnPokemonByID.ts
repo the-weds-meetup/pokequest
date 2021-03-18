@@ -1,26 +1,19 @@
 import { Request, Response } from 'express';
 
-interface Pokemon {
-  id?: number;
-  name?: string;
-  sprite?: string;
-  offical_artwork?: string;
-}
-
 const returnPokemonByID = (
   _req: Request,
   _res: Response,
-  POKEMON: Pokemon[]
+  POKEMON: Record<string, unknown>
 ): void => {
   if (POKEMON === undefined) {
     _res.status(500).send('No Pokemon');
   } else {
     const { id } = _req.params;
-    const pokemon = POKEMON[parseInt(id) - 1];
+    const pokemon = POKEMON[id];
 
     // a postive integer
     if (pokemon) {
-      _res.status(200).send({
+      _res.status(201).send({
         time: Date.now(),
         data: pokemon,
       });

@@ -58,8 +58,6 @@ const addMission = async (_req: Request, _res: Response): Promise<void> => {
       });
   }
 
-  console.log(success_pokemon, poke_array, missing_pokemon);
-
   const success_pokemon_list = await Promise.all(
     success_pokemon.map(async (poke_id: number) => {
       return await getPokemon(poke_id);

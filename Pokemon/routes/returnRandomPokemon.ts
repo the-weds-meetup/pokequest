@@ -1,24 +1,18 @@
 import { Request, Response } from 'express';
 
-interface Pokemon {
-  id?: number;
-  name?: string;
-  sprite?: string;
-  offical_artwork?: string;
-}
-
 // get a random pokemon from the list
-const getRandomPokemon = (POKEMON: Pokemon[]): Pokemon => {
-  const size = POKEMON.length;
+const getRandomPokemon = (POKEMON: Record<string, unknown>): unknown => {
+  const keys = Object.keys(POKEMON);
+  const size = keys.length;
   const randomInt = Math.floor(Math.random() * size);
-  return POKEMON[randomInt];
+  return POKEMON[keys[randomInt]];
 };
 
 // returns an array of one to many pokemon
 const returnMultipleRandomPokemon = (
   _req: Request,
   _res: Response,
-  POKEMON: Pokemon[]
+  POKEMON: Record<string, unknown>
 ): void => {
   const { count } = _req.params;
   const size = parseInt(count);

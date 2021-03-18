@@ -1,24 +1,28 @@
 import { Request, Response } from 'express';
 
-interface Pokemon {
-  id?: number;
-  name?: string;
-  sprite?: string;
-  offical_artwork?: string;
-}
-
 const returnAvailablePokemon = (
   _req: Request,
   _res: Response,
-  POKEMON: Pokemon[]
+  POKEMON: Record<string, unknown>
 ): void => {
   if (POKEMON === undefined) {
-    _res.status(500).send('No Pokemon');
+    _res.status(500).send({
+      data: {
+        msg: 'No Pokemon',
+      },
+    });
   } else {
+    const pokemon_list = [];
+    for (const id in POKEMON) {
+      pokemon_list.push(POKEMON[id]);
+    }
+
     _res.status(200).send({
       time: Date.now(),
-      size: POKEMON.length,
-      data: POKEMON,
+      data: {
+        size: pokemon_list.length,
+        pokemon: pokemon_list,
+      },
     });
   }
 };

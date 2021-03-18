@@ -13,15 +13,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-interface Pokemon {
-  id?: number;
-  name?: string;
-  sprite?: string;
-  offical_artwork?: string;
-}
-
 // load pokemon list
-let POKEMON: Pokemon[] | [];
+let POKEMON: Record<string, unknown>;
 
 app.get('/', (req, res) => res.send('Pokemon Microservice'));
 
@@ -40,7 +33,7 @@ app.get('/pokemon/random/:count', (req, res) => {
 app.listen(PORT, async () => {
   POKEMON = await getPokemonList().catch((error: Error) => {
     console.log('An error occured when fetching', error);
-    return [];
+    return {};
   });
 
   console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`);

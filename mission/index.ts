@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 
-import { addMission, getAllMissions } from './routes';
+import { addMission, getAllMissions, getMissionInformation } from './routes';
 
 dotenv.config();
 
@@ -11,6 +11,8 @@ const PORT = process.env.PORT || 8001;
 app.use(express.json());
 
 app.get('/', (req, res) => res.send('Missions Microservice'));
+
+app.get('/mission/:mission_id', getMissionInformation);
 
 app.get('/mission', getAllMissions);
 

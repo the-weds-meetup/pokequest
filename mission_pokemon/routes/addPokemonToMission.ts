@@ -5,6 +5,7 @@ import { Client } from 'pg';
 dotenv.config();
 const isProduction = process.env.NODE_ENV === 'production';
 const port = parseInt(`${process.env.DATABASE_PORT}`) || 5432;
+const server_name = 'mission_pokemon';
 
 const connectionString = isProduction
   ? {
@@ -25,10 +26,17 @@ const addPokemonToMission = async (
   _req: Request,
   _res: Response
 ): Promise<void> => {
-  const { poke_id, mission_id } = _req.body;
+  const {
+    data: { poke_id, mission_id },
+  } = _req.body;
 
   if (!poke_id || !mission_id) {
-    _res.status(401).send('Missing variables');
+    _res.status(401).send({
+      data: {
+        server: server_name,
+        msg: 'Missing Variables',
+      },
+    });
   }
 
   const query = {
@@ -48,9 +56,13 @@ const addPokemonToMission = async (
         data: results.rows[0],
       });
     })
-    .catch((error) => {
-      console.log(error);
-      _res.status(418).send('Server Error');
+    .catch((error: Error) => {
+      _res.status(418).send({
+        data: {
+          server: server_name,
+          error: error.message,
+        },
+      });
     })
     .finally(() => client.end());
 };
