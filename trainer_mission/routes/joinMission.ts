@@ -25,7 +25,9 @@ const joinMission = async (_req: Request, _res: Response): Promise<void> => {
   const { mission_id, trainer_id, trainer_name } = _req.body;
 
   if (!mission_id || !trainer_id) {
-    _res.status(401).send('Missing variables');
+    _res.status(401).send({
+      data: { msg: 'Missing variables' },
+    });
   }
 
   const trainer = trainer_name || '';
@@ -48,8 +50,10 @@ const joinMission = async (_req: Request, _res: Response): Promise<void> => {
       });
     })
     .catch((error) => {
-      console.log(error);
-      _res.status(418).send('Server Error');
+      console.log(error.message);
+      _res.status(418).send({
+        data: error.message,
+      });
     })
     .finally(() => client.end());
 };

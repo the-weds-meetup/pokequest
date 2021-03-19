@@ -43,7 +43,9 @@ const returnAllMissions = async (
     })
     .catch((error) => {
       console.log(error);
-      _res.status(418).send('Server Error');
+      _res.status(418).send({
+        data: error.message,
+      });
     })
     .finally(() => client.end());
 };

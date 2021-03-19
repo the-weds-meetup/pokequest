@@ -4,6 +4,7 @@ import { Client } from 'pg';
 
 dotenv.config();
 const isProduction = process.env.NODE_ENV === 'production';
+
 const port = parseInt(`${process.env.DATABASE_PORT}`) || 5432;
 
 const connectionString = isProduction
@@ -21,21 +22,15 @@ const connectionString = isProduction
       port: port,
     };
 
-const getMissionTrainers = async (
+const getMissionsOngoing = async (
   _req: Request,
   _res: Response
 ): Promise<void> => {
-  const { mission } = _req.params;
-  const { is_admin } = _req.body;
-
+  // get all missions where end time is less than the unix time now
   const query = {
-    text: 'SELECT * FROM trainer_mission WHERE mission_id = $1',
-    values: [mission],
+    text: 'SELECT * FROM mission WHERE end_time < $1 ',
+    values: [Date.now()],
   };
-
-  if (!is_admin) {
-    _res.sendStatus(403);
-  }
 
   const client = new Client(connectionString);
   await client.connect();
@@ -49,7 +44,7 @@ const getMissionTrainers = async (
       });
     })
     .catch((error) => {
-      console.log(error.message);
+      console.log(error);
       _res.status(418).send({
         data: error.message,
       });
@@ -57,4 +52,4 @@ const getMissionTrainers = async (
     .finally(() => client.end());
 };
 
-export default getMissionTrainers;
+export default getMissionsOngoing;
