@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 
-import { addMission, getAllPokemon, getMissionInformation } from './routes';
+import { addMission, getAllPokemon } from './routes';
 
 dotenv.config();
 const app = express();
@@ -12,9 +12,6 @@ app.use(express.json());
 // get missions and their information
 
 app.get('/', (req, res) => res.send('Complex Pokemons Microservice'));
-
-// get a mission's pokemons
-app.get('/mission/:mission_id', getMissionInformation);
 
 // get all pokemon available
 app.get('/pokemon', getAllPokemon);
