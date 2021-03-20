@@ -21,6 +21,8 @@ services:
       - "5432:5432"
     volumes:
       - pokequest_data:/var/lib/postgresql/data
+      - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
+
 
   pokemon:
     build:
