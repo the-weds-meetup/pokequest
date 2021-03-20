@@ -21,14 +21,12 @@ const connectionString = isProduction
       port: port,
     };
 
-const addPokemon = async (
-  _req: Request,
-  _res: Response
-): Promise<void> => {
+const addPokemon = async (_req: Request, _res: Response): Promise<void> => {
   const { trainer, pokemon } = _req.params;
 
   const query = {
-    text: 'INSERT INTO trainer_pokemon(trainer_id, pokemon_id, time_catch) VALUES($1, $2, $3) RETURNING *',
+    text:
+      'INSERT INTO trainer_pokemon(trainer_id, pokemon_id, catch_time) VALUES($1, $2, $3) RETURNING *',
     values: [trainer, pokemon, Date.now()],
   };
 

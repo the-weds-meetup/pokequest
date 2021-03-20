@@ -1,0 +1,32 @@
+version: "3.8"
+
+volumes:
+  pokequest_data:
+
+services:
+  ###################################
+  # DATABASE: The POSTGRES DB
+  # only for development
+  ###################################
+  postgres:
+    build:
+      context: ./database
+      dockerfile: DOCKERFILE
+    image: <docker_id>/db:pokequest
+    restart: always
+    environment: 
+      POSTGRES_UESR: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pokequest_data:/var/lib/postgresql/data
+
+  pokemon:
+    build:
+      context: ./pokemon
+      dockerfile: DOCKERFILE
+    image: <docker_id>/pokemon:pokequest
+    restart: always
+    ports:
+      - "8000:8000"
