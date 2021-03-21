@@ -41,7 +41,7 @@ const updatePokemonStatus = async (
       throw { message: 'Missing Types' };
     }
 
-    if (update_type !== 'mission' || update_type !== 'released') {
+    if (update_type !== 'mission' && update_type !== 'released') {
       throw { message: 'Incorrect Types' };
     }
 

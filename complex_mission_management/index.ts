@@ -6,6 +6,7 @@ import {
   getMissionInformation,
   getMissionsAvailable,
   getMissionsSubscribed,
+  submitPokemon,
 } from './routes';
 
 dotenv.config();
@@ -43,20 +44,23 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send('MISSION_MANAGEMENT Microservice'));
 
+// get all mission available, not subscribed by the user: array
+app.get('/mission/available/:user_id', getMissionsAvailable);
+
 // sign up for a mission
 app.post('/mission/:mission_id/', acceptMission);
 
 // get a mission's pokemons
 app.get('/mission/:mission_id', getMissionInformation);
 
-// get all mission available, not subscribed by the user: array
-app.get('/mission/available/:user_id', getMissionsAvailable);
-
 // get currently subscribed missions: array
 app.get('/mission/subscribe/:user_id', getMissionsSubscribed);
 
 // get completed missions: array
 app.get('/mission/complete/:user_id', getMissionsSubscribed);
+
+// submit pokemon to mission
+app.post('/mission/submit/:mission_id', submitPokemon);
 
 app.listen(PORT, async () => {
   console.log(
