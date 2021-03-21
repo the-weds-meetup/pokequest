@@ -23,48 +23,43 @@ const connectionString = isProduction
     };
 
 const addMission = async (_req: Request, _res: Response): Promise<void> => {
-  const {
-    data: { start_time, end_time },
-  } = _req.body;
-
-  if (!start_time || !end_time) {
-    _res.status(401).send({
-      data: {
-        server: server_name,
-        msg: 'Missing Variables',
-      },
-    });
-  }
+  const { start_time, end_time } = _req.body;
+  const isConnect = false;
 
   const query = {
     text:
       'INSERT INTO mission(start_time, end_time, creation_time) VALUES($1, $2, $3) RETURNING *',
     values: [start_time, end_time, Date.now()],
   };
-
   const client = new Client(connectionString);
-  await client.connect();
 
-  await client
-    .query(query)
-    .then((results) => {
+  try {
+    if (!start_time || !end_time) {
+      throw { message: 'Missing Variables' };
+    }
+
+    await client.connect();
+    await client.query(query).then((results) => {
       const mission = results.rows[0];
       console.log(mission);
       _res.status(201).send({
         time: Date.now(),
         data: mission,
       });
-    })
-    .catch((error: Error) => {
-      console.log('[Mission Server]', error);
-      _res.status(418).send({
-        data: {
-          server: server_name,
-          error: error.message,
-        },
-      });
-    })
-    .finally(() => client.end());
+    });
+  } catch (error) {
+    console.log('[MISSION]:', error);
+    _res.status(418).send({
+      time: Date.now(),
+      server: server_name,
+      msg: error.message,
+    });
+  } finally {
+    // disconnect client if connected
+    if (isConnect) {
+      client.end();
+    }
+  }
 };
 
 export default addMission;

@@ -26,45 +26,42 @@ const addPokemonToMission = async (
   _req: Request,
   _res: Response
 ): Promise<void> => {
-  const {
-    data: { poke_id, mission_id },
-  } = _req.body;
-
-  if (!poke_id || !mission_id) {
-    _res.status(401).send({
-      data: {
-        server: server_name,
-        msg: 'Missing Variables',
-      },
-    });
-  }
-
+  const { poke_id, mission_id } = _req.body;
+  const client = new Client(connectionString);
   const query = {
     text:
       'INSERT INTO mission_pokemon(mission_id, pokemon_id) VALUES($1, $2) RETURNING *',
     values: [mission_id, poke_id],
   };
+  let isConnect = false;
 
-  const client = new Client(connectionString);
-  await client.connect();
+  try {
+    if (!poke_id || !mission_id) {
+      throw { message: 'Missing Variables' };
+    }
 
-  await client
-    .query(query)
-    .then((results) => {
+    await client.connect().then(() => {
+      isConnect = true;
+    });
+    await client.query(query).then((results) => {
       _res.status(201).send({
         time: Date.now(),
         data: results.rows[0],
       });
-    })
-    .catch((error: Error) => {
-      _res.status(418).send({
-        data: {
-          server: server_name,
-          error: error.message,
-        },
-      });
-    })
-    .finally(() => client.end());
+    });
+  } catch (error) {
+    console.log('[MISSION_POKEMON]:', error);
+    _res.status(418).send({
+      date: Date.now(),
+      server: server_name,
+      msg: error.message,
+    });
+  } finally {
+    // disconnect client if connected
+    if (isConnect) {
+      client.end();
+    }
+  }
 };
 
 export default addPokemonToMission;

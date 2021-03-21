@@ -23,10 +23,8 @@ const addMission = async (_req: Request, _res: Response): Promise<void> => {
   // create a mission at mission_url
   const mission_id = await axios
     .post(MISSION_URL + '/mission', {
-      data: {
-        start_time: start_time,
-        end_time: end_time,
-      },
+      start_time: start_time,
+      end_time: end_time,
     })
     .then((response) => {
       return response.data.data.id;
@@ -44,10 +42,8 @@ const addMission = async (_req: Request, _res: Response): Promise<void> => {
   for await (const poke_id of poke_array) {
     await axios
       .post(MISSION_POKEMON_URL + '/addPokemon', {
-        data: {
-          poke_id: poke_id,
-          mission_id: mission_id,
-        },
+        poke_id: poke_id,
+        mission_id: mission_id,
       })
       .then(() => {
         success_pokemon.push(poke_id);

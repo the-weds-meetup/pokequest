@@ -23,14 +23,15 @@ const returnMultipleRandomPokemon = (
   }
 
   if (pokemonList.length > 0) {
-    _res.status(200).send({
+    _res.status(201).send({
       time: Date.now(),
       data: pokemonList,
     });
   } else {
     _res.status(400).send({
       time: Date.now(),
-      data: 'Invalid ID',
+      server: 'pokemon',
+      msg: 'Invalid ID',
     });
   }
 };

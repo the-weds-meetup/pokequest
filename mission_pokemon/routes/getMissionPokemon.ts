@@ -5,6 +5,7 @@ import { Client } from 'pg';
 dotenv.config();
 const isProduction = process.env.NODE_ENV === 'production';
 const port = parseInt(`${process.env.DATABASE_PORT}`) || 5432;
+const server_name = 'trainer_mission';
 
 const connectionString = isProduction
   ? {
@@ -26,34 +27,45 @@ const getMissionPokemon = async (
   _res: Response
 ): Promise<void> => {
   const { mission_id } = _req.body;
+  const query = {
+    text: 'SELECT * FROM mission_pokemon WHERE mission_id = $1',
+    values: [mission_id],
+  };
+  const client = new Client(connectionString);
+  let isConnect = false;
 
   if (!mission_id) {
     _res.status(401).send('Missing variables');
   }
 
-  const query = {
-    text: 'SELECT * FROM mission_pokemon WHERE mission_id = $1',
-    values: [mission_id],
-  };
+  try {
+    if (!mission_id) {
+      throw { message: 'Missing Variables' };
+    }
 
-  const client = new Client(connectionString);
-  await client.connect();
+    await client.connect().then(() => {
+      isConnect = true;
+    });
 
-  await client
-    .query(query)
-    .then((results) => {
+    await client.query(query).then((results) => {
       _res.status(201).send({
         time: Date.now(),
         data: results.rows,
       });
-    })
-    .catch((error: Error) => {
-      console.log('[Mission Server]', error);
-      _res.status(418).send({
-        data: error.message,
-      });
-    })
-    .finally(() => client.end());
+    });
+  } catch (error) {
+    console.log('[MISSION_POKEMON]:', error);
+    _res.status(418).send({
+      date: Date.now(),
+      server: server_name,
+      data: error.message,
+    });
+  } finally {
+    // disconnect client if connected
+    if (isConnect) {
+      client.end();
+    }
+  }
 };
 
 export default getMissionPokemon;

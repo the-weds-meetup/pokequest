@@ -5,6 +5,7 @@ import { Client } from 'pg';
 dotenv.config();
 const isProduction = process.env.NODE_ENV === 'production';
 const port = parseInt(`${process.env.DATABASE_PORT}`) || 5432;
+const server_name = 'mission';
 
 const connectionString = isProduction
   ? {
@@ -26,30 +27,38 @@ const getTrainerMission = async (
   _res: Response
 ): Promise<void> => {
   const { trainer } = _req.params;
+  let isConnect = false;
 
   const query = {
     text: 'SELECT * FROM trainer_mission WHERE trainer_id = $1',
     values: [trainer],
   };
-
   const client = new Client(connectionString);
-  await client.connect();
 
-  await client
-    .query(query)
-    .then((results) => {
+  try {
+    await client.connect().then(() => {
+      isConnect = true;
+    });
+
+    await client.query(query).then((results) => {
       _res.status(201).send({
         time: Date.now(),
         data: results.rows,
       });
-    })
-    .catch((error) => {
-      console.log(error.message);
-      _res.status(418).send({
-        data: error.message,
-      });
-    })
-    .finally(() => client.end());
+    });
+  } catch (error) {
+    console.log('[MISSION]: ', error);
+    _res.status(418).send({
+      time: Date.now(),
+      server: server_name,
+      msg: error.message,
+    });
+  } finally {
+    // disconnect client if connected
+    if (isConnect) {
+      client.end();
+    }
+  }
 };
 
 export default getTrainerMission;

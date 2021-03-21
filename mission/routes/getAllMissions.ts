@@ -6,6 +6,7 @@ dotenv.config();
 const isProduction = process.env.NODE_ENV === 'production';
 
 const port = parseInt(`${process.env.DATABASE_PORT}`) || 5432;
+const server_name = 'mission';
 
 const connectionString = isProduction
   ? {
@@ -44,7 +45,9 @@ const returnAllMissions = async (
     .catch((error) => {
       console.log(error);
       _res.status(418).send({
-        data: error.message,
+        time: Date.now(),
+        server: server_name,
+        msg: error.message,
       });
     })
     .finally(() => client.end());

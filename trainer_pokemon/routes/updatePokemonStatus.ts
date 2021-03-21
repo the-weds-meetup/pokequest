@@ -5,6 +5,7 @@ import { Client } from 'pg';
 dotenv.config();
 const isProduction = process.env.NODE_ENV === 'production';
 const port = parseInt(`${process.env.DATABASE_PORT}`) || 5432;
+const server_name = 'trainer_pokemon';
 
 const connectionString = isProduction
   ? {
@@ -27,35 +28,42 @@ const updatePokemonStatus = async (
 ): Promise<void> => {
   const { pokemon_id } = _req.params;
   const { update_type } = _req.body;
-
-  if (!update_type) {
-    _res.status(401).send('Missing Types');
-  }
-
-  if (update_type !== 'mission' || update_type !== 'released') {
-    _res.status(401).send('Incorrect Types');
-  }
+  let isConnect = false;
 
   const query = {
     text: 'UPDATE trainer_pokemon SET status = $1 WHERE id = $2',
     values: [update_type, pokemon_id],
   };
-
   const client = new Client(connectionString);
-  await client.connect();
 
-  await client
-    .query(query)
-    .then(() => {
+  try {
+    if (!update_type) {
+      throw { message: 'Missing Types' };
+    }
+
+    if (update_type !== 'mission' || update_type !== 'released') {
+      throw { message: 'Incorrect Types' };
+    }
+
+    await client.connect().then(() => {
+      isConnect = true;
+    });
+
+    await client.query(query).then(() => {
       _res.status(201).send({ time: Date.now(), msg: 'Updated' });
-    })
-    .catch((error) => {
-      console.log(error);
-      _res.status(418).send({
-        msg: 'Server Error',
-      });
-    })
-    .finally(() => client.end());
+    });
+  } catch (error) {
+    console.log('[TRAINER_POKEMON]:', error);
+    _res.status(418).send({
+      server: server_name,
+      msg: error.message,
+    });
+  } finally {
+    // disconnect client if connected
+    if (isConnect) {
+      client.end();
+    }
+  }
 };
 
 export default updatePokemonStatus;
