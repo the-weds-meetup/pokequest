@@ -62,9 +62,6 @@ services:
       context: ./mission_pokemon
       dockerfile: DOCKERFILE
     image: <docker_id>/mission_pokemon:pokequest
-    depends_on:
-      - pokemon
-      - mission
     restart: always
     environment:
       DATABASE_USER: postgres
@@ -83,8 +80,6 @@ services:
       context: ./trainer_mission
       dockerfile: DOCKERFILE
     image: <docker_id>/trainer_mission:pokequest
-    depends_on:
-      - mission
     restart: always
     environment:
       DATABASE_USER: postgres
@@ -103,8 +98,6 @@ services:
       context: ./trainer_pokemon
       dockerfile: DOCKERFILE
     image: <docker_id>/trainer_pokemon:pokequest
-    depends_on:
-      - pokemon
     restart: always
     environment:
       DATABASE_USER: postgres
@@ -114,3 +107,99 @@ services:
       DATABASE_PORT: 5432
     ports:
       - "8004:8004"
+
+  ###################################
+  # SERVICE: trainer_mission_pokemon
+  ###################################
+    trainer_mission_pokemon:
+    build:
+      context: ./trainer_mission_pokemon
+      dockerfile: DOCKERFILE
+    image: <docker_id>/trainer_mission_pokemon:pokequest
+    restart: always
+    environment:
+      DATABASE_USER: postgres
+      DATABASE_URL: host.docker.internal
+      DATABASE_NAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_PORT: 5432
+    ports:
+      - "8005:8005"
+
+  ###################################
+  # SERVICE: complex_mission_management_admin
+  ###################################
+  complex_mission_management_admin:
+    build:
+      context: ./complex_mission_management_admin
+      dockerfile: DOCKERFILE
+    image: <docker_id>/complex_mission_management_admin:pokequest
+    restart: always
+    depends_on: 
+      - pokemon
+      - mission
+      - mission_pokemon
+      - trainer_mission
+      - trainer_pokemon
+      - trainer_mission_pokemon
+    environment:
+      POKEMON_URL: host.docker.internal:8000
+      MISSION_URL: host.docker.internal:8001
+      MISSION_POKEMON_URL: host.docker.internal:8002
+      TRAINER_MISSION_URL: host.docker.internal:8003
+      TRAINER_POKEMON_URL: host.docker.internal:8004
+      TRAINER_MISSION_POKEMON_URL: host.docker.internal:8005
+    ports:
+      - "9000:9000"
+
+  ###################################
+  # SERVICE: complex_mission_management
+  ###################################
+  complex_mission_management:
+    build:
+      context: ./complex_mission_management
+      dockerfile: DOCKERFILE
+    image: <docker_id>/complex_mission_management:pokequest
+    restart: always
+    depends_on: 
+      - pokemon
+      - mission
+      - mission_pokemon
+      - trainer_mission
+      - trainer_pokemon
+      - trainer_mission_pokemon
+    environment:
+      POKEMON_URL: host.docker.internal:8000
+      MISSION_URL: host.docker.internal:8001
+      MISSION_POKEMON_URL: host.docker.internal:8002
+      TRAINER_MISSION_URL: host.docker.internal:8003
+      TRAINER_POKEMON_URL: host.docker.internal:8004
+      TRAINER_MISSION_POKEMON_URL: host.docker.internal:8005
+    ports:
+      - "9001:9001"
+  
+  ###################################
+  # SERVICE: complex_pokemon_management
+  ###################################
+  complex_pokemon_management:
+    build:
+      context: ./complex_pokemon_management
+      dockerfile: DOCKERFILE
+    image: <docker_id>/complex_pokemon_management:pokequest
+    restart: always
+    depends_on: 
+      - pokemon
+      - mission
+      - mission_pokemon
+      - trainer_mission
+      - trainer_pokemon
+      - trainer_mission_pokemon
+    environment:
+      POKEMON_URL: host.docker.internal:8000
+      MISSION_URL: host.docker.internal:8001
+      MISSION_POKEMON_URL: host.docker.internal:8002
+      TRAINER_MISSION_URL: host.docker.internal:8003
+      TRAINER_POKEMON_URL: host.docker.internal:8004
+      TRAINER_MISSION_POKEMON_URL: host.docker.internal:8005
+    ports:
+      - "9002:9002"
