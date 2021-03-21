@@ -46,7 +46,7 @@ const addPokemon = async (_req: Request, _res: Response): Promise<void> => {
       });
     });
   } catch (error) {
-    console.log(error);
+    console.log('[TRAINER_POKEMON]:', error);
     _res.status(418).send({
       time: Date.now(),
       server: server_name,

@@ -50,7 +50,10 @@ const updatePokemonStatus = async (
     });
 
     await client.query(query).then(() => {
-      _res.status(201).send({ time: Date.now(), msg: 'Updated' });
+      _res.status(201).send({
+        time: Date.now(),
+        msg: 'Updated',
+      });
     });
   } catch (error) {
     console.log('[TRAINER_POKEMON]:', error);

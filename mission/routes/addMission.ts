@@ -41,7 +41,6 @@ const addMission = async (_req: Request, _res: Response): Promise<void> => {
     await client.connect();
     await client.query(query).then((results) => {
       const mission = results.rows[0];
-      console.log(mission);
       _res.status(201).send({
         time: Date.now(),
         data: mission,

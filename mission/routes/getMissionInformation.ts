@@ -39,14 +39,13 @@ const returnAllMissions = async (
   await client
     .query(query)
     .then((results) => {
-      console.log(results);
       _res.status(201).send({
         time: Date.now(),
         data: results.rows[0],
       });
     })
     .catch((error) => {
-      console.log(error);
+      console.log('[TRAINER_MISSION]:', error);
       _res.status(418).send({
         time: Date.now(),
         server: server_name,

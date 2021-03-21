@@ -39,8 +39,12 @@ const submitPokemon = async (_req: Request, _res: Response): Promise<void> => {
       _res.status(201).send({ time: Date.now() });
     })
     .catch((error) => {
-      console.log(error);
-      _res.status(418).send('[Mission_Trainer_Pokemon] Server Error');
+      console.log('[Mission_Trainer_Pokemon]:', error);
+      _res.status(418).send({
+        time: Date.now(),
+        server: 'trainer_pokemon_mission',
+        msg: error.message,
+      });
     })
     .finally(() => client.end());
 };

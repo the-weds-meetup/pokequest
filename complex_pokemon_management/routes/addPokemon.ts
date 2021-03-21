@@ -16,7 +16,6 @@ const TRAINER_POKEMON_URL = `${process.env.TRAINER_POKEMON_URL}`;
  */
 const addPokemon = async (_req: Request, _res: Response): Promise<void> => {
   const { trainer_id } = _req.body;
-  console.log(trainer_id);
 
   try {
     // error handling

@@ -43,7 +43,6 @@ const addMission = async (_req: Request, _res: Response): Promise<void> => {
       .then((response) => {
         return response.data.data.id;
       });
-    console.log(mission_id);
 
     // add inside array
     for await (const poke_id of poke_array) {

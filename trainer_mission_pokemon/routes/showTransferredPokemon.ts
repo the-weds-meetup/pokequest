@@ -44,8 +44,12 @@ const showTransferredPokemon = async (
       });
     })
     .catch((error) => {
-      console.log(error);
-      _res.status(418).send('Server Error');
+      console.log('[TRAINER_POKEMON_MISSION]:', error);
+      _res.status(418).send({
+        time: Date.now(),
+        server: 'trainer_pokemon_mission',
+        msg: error.message,
+      });
     })
     .finally(() => client.end());
 };
