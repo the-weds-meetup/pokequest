@@ -7,22 +7,22 @@ services:
   ###################################
   # DATABASE: The POSTGRES DB
   # only for development
+  # remove in production
   ###################################
   postgres:
     build:
       context: ./database
       dockerfile: DOCKERFILE
-    image: <docker_id>/db:pokequest
+    image: <docker_id>/postgres:pokequest
     restart: always
     environment: 
-      POSTGRES_UESR: postgres
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
     volumes:
       - pokequest_data:/var/lib/postgresql/data
       - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
-
 
   pokemon:
     build:
@@ -32,3 +32,36 @@ services:
     restart: always
     ports:
       - "8000:8000"
+
+  mission:
+    build:
+      context: ./mission
+      dockerfile: DOCKERFILE
+    image: <docker_id>/mission:pokequest
+    restart: always
+    environment:
+      DATABASE_USER: postgres
+      DATABASE_URL: localhost
+      DATABASE_NAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_PORT: 5432
+    ports:
+      - "8001:8001"
+
+  mission_pokemon:
+    build:
+      context: ./mission_pokemon
+      dockerfile: DOCKERFILE
+    image: <docker_id>/mission:pokequest
+    depends_on:
+      - pokemon
+      - mission
+    restart: always
+    environment:
+      DATABASE_USER: postgres
+      DATABASE_URL: localhost
+      DATABASE_NAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_PORT: 5432
+    ports:
+      - "8002:8002"
