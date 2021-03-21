@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 
 import {
+  acceptMission,
   getMissionInformation,
   getMissionsAvailable,
   getMissionsSubscribed,
@@ -29,11 +30,21 @@ app.use(express.json());
  * To view completed missions (per user)
  *   - see mission start time and end time
  *   - see pokemon needed
+ *
+ * =================================
+ * MISSION_ACCEPT
+ *
+ * OBJECTIVE:
+ * ACCEPT A MISSION
+ *   - link trainer to mission
  */
 
 // get missions and their information
 
-app.get('/', (req, res) => res.send('Complex MISSION_VIEW Microservice'));
+app.get('/', (req, res) => res.send('MISSION_MANAGEMENT Microservice'));
+
+// sign up for a mission
+app.post('/mission/:mission_id/', acceptMission);
 
 // get a mission's pokemons
 app.get('/mission/:mission_id', getMissionInformation);
@@ -49,6 +60,6 @@ app.get('/mission/complete/:user_id', getMissionsSubscribed);
 
 app.listen(PORT, async () => {
   console.log(
-    `⚡️[server]: Microservice Mission View is running at https://localhost:${PORT}`
+    `💪[server]: MISSION_MANAGEMENT is running at https://localhost:${PORT}`
   );
 });

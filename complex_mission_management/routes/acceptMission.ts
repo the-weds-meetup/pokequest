@@ -16,7 +16,6 @@ const TRAINER_MISSION_URL = `${process.env.TRAINER_MISSION_URL}`;
 const acceptMission = async (_req: Request, _res: Response): Promise<void> => {
   // link mission to user_id
   const { mission_id } = _req.params;
-  console.log(_req.body);
   const { trainer_id, trainer_name } = _req.body;
 
   try {
@@ -53,7 +52,7 @@ const acceptMission = async (_req: Request, _res: Response): Promise<void> => {
     console.log('[COMPLEX MISSION JOIN]', error);
     _res.status(500).send({
       date: Date.now(),
-      data: error,
+      data: error.response.data,
     });
   }
 };

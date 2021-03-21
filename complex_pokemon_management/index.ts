@@ -5,7 +5,7 @@ import { addPokemon, viewPokemon } from './routes';
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 9003;
+const PORT = process.env.PORT || 9002;
 
 app.use(express.json());
 
@@ -31,6 +31,6 @@ app.get('/pokemon/caught', viewPokemon);
 
 app.listen(PORT, async () => {
   console.log(
-    `⚡️[server]: Pokemon_ADD is running at https://localhost:${PORT}`
+    `💪[server]: Pokemon_ADD is running at https://localhost:${PORT}`
   );
 });

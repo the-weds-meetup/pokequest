@@ -11,7 +11,7 @@ app.use(express.json());
 
 // get missions and their information
 
-app.get('/', (req, res) => res.send('Complex Pokemons Microservice'));
+app.get('/', (req, res) => res.send('MISSION_MANAGEMENT (admin) Microservice'));
 
 // get all pokemon available
 app.get('/pokemon', getAllPokemon);
@@ -21,6 +21,6 @@ app.post('/mission/add', addMission);
 
 app.listen(PORT, async () => {
   console.log(
-    `⚡️[server]: Microservice Request Mission is running at https://localhost:${PORT}`
+    `⚡💪[server]: MISSION_MANAGEMENT (admin) is running at https://localhost:${PORT}`
   );
 });

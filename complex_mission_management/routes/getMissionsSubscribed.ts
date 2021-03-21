@@ -32,7 +32,7 @@ const getMissionsSubscribed = async (
 
     // get all the ongoing mission and only find those which matches the mission_id gotten previously
     const ongoingMissionList = await axios
-      .get(MISSION_URL + '/mission/complete')
+      .get(MISSION_URL + '/mission/ongoing')
       .then((response) => {
         return response.data.data.filter((mission) => {
           return trainerMissionList.includes(mission.id);

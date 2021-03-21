@@ -61,7 +61,7 @@ services:
     build:
       context: ./mission_pokemon
       dockerfile: DOCKERFILE
-    image: <docker_id>/mission:pokequest
+    image: <docker_id>/mission_pokemon:pokequest
     depends_on:
       - pokemon
       - mission
