@@ -24,6 +24,9 @@ services:
       - pokequest_data:/var/lib/postgresql/data
       - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
 
+  ###################################
+  # SERVICE: pokemon
+  ###################################
   pokemon:
     build:
       context: ./pokemon
@@ -33,6 +36,9 @@ services:
     ports:
       - "8000:8000"
 
+  ###################################
+  # SERVICE: mission
+  ###################################
   mission:
     build:
       context: ./mission
@@ -41,13 +47,16 @@ services:
     restart: always
     environment:
       DATABASE_USER: postgres
-      DATABASE_URL: localhost
+      DATABASE_URL: host.docker.internal
       DATABASE_NAME: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_PORT: 5432
     ports:
       - "8001:8001"
 
+  ###################################
+  # SERVICE: mission_pokemon
+  ###################################
   mission_pokemon:
     build:
       context: ./mission_pokemon
@@ -59,9 +68,49 @@ services:
     restart: always
     environment:
       DATABASE_USER: postgres
-      DATABASE_URL: localhost
+      DATABASE_URL: host.docker.internal
       DATABASE_NAME: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_PORT: 5432
     ports:
       - "8002:8002"
+
+  ###################################
+  # SERVICE: trainer_mission
+  ###################################
+  trainer_mission:
+    build:
+      context: ./trainer_mission
+      dockerfile: DOCKERFILE
+    image: <docker_id>/trainer_mission:pokequest
+    depends_on:
+      - mission
+    restart: always
+    environment:
+      DATABASE_USER: postgres
+      DATABASE_URL: host.docker.internal
+      DATABASE_NAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_PORT: 5432
+    ports:
+      - "8003:8003"
+
+  ###################################
+  # SERVICE: trainer_pokemon
+  ###################################
+  trainer_pokemon:
+    build:
+      context: ./trainer_pokemon
+      dockerfile: DOCKERFILE
+    image: <docker_id>/trainer_pokemon:pokequest
+    depends_on:
+      - pokemon
+    restart: always
+    environment:
+      DATABASE_USER: postgres
+      DATABASE_URL: host.docker.internal
+      DATABASE_NAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_PORT: 5432
+    ports:
+      - "8004:8004"

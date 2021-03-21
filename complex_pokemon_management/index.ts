@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 
-import { addPokemon } from './routes';
+import { addPokemon, viewPokemon } from './routes';
 
 dotenv.config();
 const app = express();
@@ -23,8 +23,11 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send('Complex POKEMON_ADD Microservice'));
 
-// sign up for a mission
+// add a pokemon to inventory
 app.post('/pokemon/add', addPokemon);
+
+// show all pokemon by user with the status 'caught'
+app.get('/pokemon/caught', viewPokemon);
 
 app.listen(PORT, async () => {
   console.log(
