@@ -1,7 +1,12 @@
 import dotenv from 'dotenv';
 import express from 'express';
 
-import { getAllPokemon, addPokemon, updatePokemonStatus } from './routes';
+import {
+  addPokemon,
+  getAllPokemon,
+  getCaughtPokemon,
+  updatePokemonStatus,
+} from './routes';
 
 dotenv.config();
 const app = express();
@@ -11,8 +16,9 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send('Trainer Pokemons Microservice'));
 
-app.get('/inventory/:trainer', getAllPokemon);
-app.post('/inventory/:trainer/:pokemon', addPokemon);
+app.get('/inventory/:trainer_id', getAllPokemon);
+app.get('/inventory/caught/:trainer_id', getCaughtPokemon);
+app.post('/inventory/add/:trainer_id/:pokemon_id', addPokemon);
 app.post('/inventory/update/:pokemon_id', updatePokemonStatus);
 
 app.listen(PORT, async () => {

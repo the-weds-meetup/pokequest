@@ -21,10 +21,7 @@ const connectionString = isProduction
       port: port,
     };
 
-const getAllPokemon = async (
-  _req: Request,
-  _res: Response
-): Promise<void> => {
+const getAllPokemon = async (_req: Request, _res: Response): Promise<void> => {
   const { trainer } = _req.params;
 
   const query = {
@@ -45,7 +42,9 @@ const getAllPokemon = async (
     })
     .catch((error) => {
       console.log(error);
-      _res.status(418).send('Server Error');
+      _res.status(418).send({
+        msg: error.msg,
+      });
     })
     .finally(() => client.end());
 };

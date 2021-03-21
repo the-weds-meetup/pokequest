@@ -18,6 +18,7 @@ const getAllPokemon = async (_req: Request, _res: Response): Promise<void> => {
     })
     .catch((error) => {
       _res.status(500).send({
+        date: Date.now(),
         data: error.response.data.data,
       });
     });

@@ -51,7 +51,7 @@ const acceptMission = async (_req: Request, _res: Response): Promise<void> => {
     });
   } catch (error) {
     console.log('[COMPLEX MISSION JOIN]', error);
-    _res.send(500).send({
+    _res.status(500).send({
       date: Date.now(),
       data: error,
     });

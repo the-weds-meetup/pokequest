@@ -22,12 +22,12 @@ const connectionString = isProduction
     };
 
 const addPokemon = async (_req: Request, _res: Response): Promise<void> => {
-  const { trainer, pokemon } = _req.params;
+  const { trainer_id, pokemon_id } = _req.params;
 
   const query = {
     text:
       'INSERT INTO trainer_pokemon(trainer_id, pokemon_id, catch_time) VALUES($1, $2, $3) RETURNING *',
-    values: [trainer, pokemon, Date.now()],
+    values: [trainer_id, pokemon_id, Date.now()],
   };
 
   const client = new Client(connectionString);
@@ -43,7 +43,9 @@ const addPokemon = async (_req: Request, _res: Response): Promise<void> => {
     })
     .catch((error) => {
       console.log(error);
-      _res.status(418).send('Server Error');
+      _res.status(418).send({
+        msg: error.msg,
+      });
     })
     .finally(() => client.end());
 };

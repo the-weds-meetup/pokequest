@@ -61,7 +61,7 @@ const getMissionsAvailable = async (
     });
   } catch (error) {
     console.log('[COMPLES MISSION VIEW]', error);
-    _res.send(500).send({
+    _res.status(500).send({
       date: Date.now(),
       data: error,
     });
