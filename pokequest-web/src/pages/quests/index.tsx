@@ -1,27 +1,31 @@
-import React, { useCallback, useState } from 'react';
-import { GoogleLogout } from 'react-google-login';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
-import DefaultLayout from '../../components/layouts/DefaultLayouts'
+import DefaultLayout from '../../components/layouts/DefaultLayout'
+import SEO from '../../components/SEO';
+import SideNav from '../../components/SideNav'
+import MissionNav from '../../components/MissionNav'
 
 
+const Content = styled.main`
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
 
 const Quests: React.FC = () => {
   const router = useRouter();
 
-  const handleLogout = () => {
-    console.log('bye');
-    router.push('/');
-  };
-
   return (
     <DefaultLayout>
-      <p>Hello</p>
-      <GoogleLogout
-        clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
-        onLogoutSuccess={handleLogout}
-      />
+      <SEO title={'Quests'} />
+      <SideNav />
+
+      <Content>
+       <MissionNav />
+      </Content>
     </DefaultLayout>
   );
 };
