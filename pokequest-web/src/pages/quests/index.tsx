@@ -1,28 +1,28 @@
 import React, { useCallback, useState } from 'react';
 import { GoogleLogout } from 'react-google-login';
-import { useHistory } from 'react-router';
 import styled from 'styled-components';
+import { useRouter } from 'next/router';
 
-const Screen = styled.div`
-  margin: 0 auto;
-`;
+import DefaultLayout from '../../components/layouts/DefaultLayouts'
+
+
 
 const Quests: React.FC = () => {
-  const history = useHistory();
+  const router = useRouter();
 
   const handleLogout = () => {
     console.log('bye');
-    history.push('/');
+    router.push('/');
   };
 
   return (
-    <Screen>
+    <DefaultLayout>
       <p>Hello</p>
       <GoogleLogout
-        clientId={process.env.GOOGLE_CLIENT_ID}
+        clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
         onLogoutSuccess={handleLogout}
       />
-    </Screen>
+    </DefaultLayout>
   );
 };
 
