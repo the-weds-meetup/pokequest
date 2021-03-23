@@ -19,14 +19,15 @@ const Quests: React.FC = () => {
   const router = useRouter();
 
   return (
-    <DefaultLayout>
+    <>
       <SEO title={'Quests'} />
       <SideNav />
-
-      <Content>
-       <MissionNav />
-      </Content>
-    </DefaultLayout>
+      <DefaultLayout>
+        <Content>
+          <MissionNav />
+        </Content>
+      </DefaultLayout>
+    </>
   );
 };
 

@@ -25,5 +25,9 @@
   ],
   "exclude": [
     "node_modules"
+  ],
+  "typeRoots": [
+    "./src/frontend/types",
+    "./node_modules/@types"
   ]
 }

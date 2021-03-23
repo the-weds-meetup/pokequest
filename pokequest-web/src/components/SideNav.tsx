@@ -9,9 +9,11 @@ const SideNavLink = styled.div`
   margin: 0;
   background-color: #29B6F6;
   width: 250px;
-  height: 100vh;
   display: flex;
   flex-direction: column;
+  position: fixed;
+  min-height: 100vh;
+
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
   h1 {
@@ -43,7 +45,7 @@ const AdminButton = styled.button`
 `;
 
 const SideNav: React.FC = (props) => {
-  const { href, name } = props;
+  // const { href, name } = props;
   const router = useRouter();
   const [press, setPress] = useState(1);
   const [adminMode, setAdminMode] = useState(false);
@@ -77,7 +79,7 @@ const SideNav: React.FC = (props) => {
       <h1 onClick={_activateAdmin}>PokeQuest</h1>
       <NavLinkInternals />
       <GoogleLogout
-        clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+        clientId={`${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}`}
         onLogoutSuccess={_handleLogout}
       />
     </SideNavLinkAdmin>
@@ -86,7 +88,7 @@ const SideNav: React.FC = (props) => {
       <h1 onClick={_activateAdmin}>PokeQuest</h1>
       <NavLinkInternals />
       <GoogleLogout
-        clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+        clientId={`${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}`}
         onLogoutSuccess={_handleLogout}
       />
     </SideNavLink>
