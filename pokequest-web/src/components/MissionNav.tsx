@@ -38,7 +38,7 @@ const StyledLink = styled.a`
 const Line = styled.div`
   height: 80%;
   width: 1px;
-  background-color: black;
+  background-color: #00000027;
   marign: 0 auto;
 `
 
