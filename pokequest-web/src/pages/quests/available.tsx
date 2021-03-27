@@ -2,12 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
-import DefaultLayout from '../../components/layouts/DefaultLayout'
+import DefaultLayout from '../../components/layouts/DefaultLayout';
 import SEO from '../../components/SEO';
 import SideNav from '../../components/SideNav';
 import MissionNav from '../../components/MissionNav';
 import AddButton from '../../components/AddMissionBtn';
-
 
 const Content = styled.main`
   padding: 16px;
@@ -22,7 +21,7 @@ const Quests: React.FC = () => {
 
   useEffect(() => {
     setAdminMode(sessionStorage.getItem('admin') === 'true');
-  },[]);
+  }, []);
 
   return (
     <>
@@ -31,17 +30,58 @@ const Quests: React.FC = () => {
       <DefaultLayout>
         <Content>
           <MissionNav />
-          <div style={{height: '48px'}} />
+          <div style={{ height: '48px' }} />
 
-          { adminMode && <AddButton />}
+          {adminMode && <AddButton />}
 
-          <div style={{padding: '24px', width: '100%', height: '120px', backgroundColor: 'pink'}} />
-          <div style={{padding: '24px', width: '100%', height: '120px', backgroundColor: 'pink'}} />
-          <div style={{padding: '24px', width: '100%', height: '120px', backgroundColor: 'pink'}} />
-          <div style={{padding: '24px', width: '100%', height: '120px', backgroundColor: 'pink'}} />
-          <div style={{padding: '24px', width: '100%', height: '120px', backgroundColor: 'pink'}} />
-          <div style={{padding: '24px', width: '100%', height: '120px', backgroundColor: 'pink'}} />
-
+          <div
+            style={{
+              padding: '24px',
+              width: '100%',
+              height: '120px',
+              backgroundColor: 'pink',
+            }}
+          />
+          <div
+            style={{
+              padding: '24px',
+              width: '100%',
+              height: '120px',
+              backgroundColor: 'pink',
+            }}
+          />
+          <div
+            style={{
+              padding: '24px',
+              width: '100%',
+              height: '120px',
+              backgroundColor: 'pink',
+            }}
+          />
+          <div
+            style={{
+              padding: '24px',
+              width: '100%',
+              height: '120px',
+              backgroundColor: 'pink',
+            }}
+          />
+          <div
+            style={{
+              padding: '24px',
+              width: '100%',
+              height: '120px',
+              backgroundColor: 'pink',
+            }}
+          />
+          <div
+            style={{
+              padding: '24px',
+              width: '100%',
+              height: '120px',
+              backgroundColor: 'pink',
+            }}
+          />
         </Content>
       </DefaultLayout>
     </>

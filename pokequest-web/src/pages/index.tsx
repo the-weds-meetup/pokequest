@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
-import { useCallback } from 'react';
-import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
-import LoginLayout from '../components/layouts/LoginLayout'
+import React, { useCallback } from 'react';
+import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
+import LoginLayout from '../components/layouts/LoginLayout';
 import SEO from '../components/SEO';
 
 // Show Login Screen
@@ -12,7 +12,7 @@ const Login: React.FC = () => {
     console.log(response);
   };
 
-  const handleGoogleSuccess = useCallback((response: GoogleLoginResponse) => {   
+  const handleGoogleSuccess = useCallback((response: GoogleLoginResponse) => {
     // store in sessions
     sessionStorage.setItem('googleId', response.profileObj.googleId);
     sessionStorage.setItem('googleName', response.profileObj.name);
@@ -22,16 +22,16 @@ const Login: React.FC = () => {
 
   return (
     <LoginLayout>
-      <SEO title="Login"/>
+      <SEO title="Login" />
       <GoogleLogin
         clientId={`${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}`}
         buttonText="Login with Google"
         onSuccess={handleGoogleSuccess}
         onFailure={responseGoogle}
-        isSignedIn 
+        isSignedIn
       />
     </LoginLayout>
   );
-}
+};
 
 export default Login;

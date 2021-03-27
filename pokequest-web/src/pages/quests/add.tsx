@@ -4,13 +4,12 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 
-
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 import SEO from '../../components/SEO';
 import SideNav from '../../components/SideNav';
 import Header from '../../components/SiteHeader';
 import PokemonGrid from '../../components/PokemonList';
-import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Content = styled.main`
   padding: 16px;
@@ -20,15 +19,24 @@ const Content = styled.main`
 
   h2 {
     margin: 0;
+    padding-bottom: 12px;
+  }
+
+  p {
+    margin: 0;
     padding-bottom: 16px;
   }
 
-  .break { 
+  .break {
     height: 32px;
   }
 
-  .break2 { 
+  .break2 {
     height: 64px;
+  }
+
+  .errorMsg {
+    color: red;
   }
 `;
 
@@ -57,16 +65,15 @@ interface Props {
     sprite: string;
     official_artwork: string;
   }[];
-};
+}
 
 const AddQuest: React.FC<Props> = (props) => {
   const { types, data } = props;
   const router = useRouter();
   const [adminMode, setAdminMode] = useState(false);
-  const [pokemonSelect, setPokemonSelect] = useState([]);
+  const [pokemonSelect, setPokemonSelect] = useState(['']);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
 
   useEffect(() => {
     const isAdmin = sessionStorage.getItem('admin') === 'true';
@@ -74,28 +81,67 @@ const AddQuest: React.FC<Props> = (props) => {
     if (!isAdmin) {
       router.back();
     }
-  },[]);
+
+    const todayDate = new Date();
+    todayDate.setHours(0, 0, 0, 0);
+    setStartDate(todayDate);
+
+    const tomorrowDate = new Date();
+    tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+    setEndDate(tomorrowDate);
+
+    setPokemonSelect([]);
+  }, []);
 
   // handle when pokemon is clicked
   const _onPokemonSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const isCheck = e.target.checked;
-    const newPokemon = e.target.value
+    const newPokemon = e.target.value;
     if (isCheck) {
       setPokemonSelect([...pokemonSelect, newPokemon]);
     } else {
       setPokemonSelect(pokemonSelect.filter((pokeId) => pokeId !== newPokemon));
     }
-  }
+  };
 
   const _onStartDateChange = (date: Date) => {
-    date.setHours(0, 0, 0, 0)
+    date.setHours(0, 0, 0, 0);
     setStartDate(date);
-  }
+  };
 
   const _onEndDateChange = (date: Date) => {
-    date.setHours(0, 0, 0, 0)
+    date.setHours(0, 0, 0, 0);
     setEndDate(date);
-  }
+  };
+
+  const _onSubmit = async () => {
+    const dateError = endDate <= startDate;
+
+    // check if meet the criteria
+    // end date > start date
+    if (dateError) {
+      // error
+    }
+
+    if (dateError || pokemonSelect.length > 3) {
+      console.log('errors found when creating mission');
+      return;
+    }
+
+    const payload = {
+      poke_array: pokemonSelect,
+      start_time: startDate,
+      end_time: endDate,
+    };
+
+    // send response here
+    await axios
+      .post('/api/mission/add', payload)
+      .then(() => router.push('/quests'))
+      .catch((response) => {
+        console.log(response.data);
+      });
+  };
 
   return (
     <>
@@ -103,8 +149,8 @@ const AddQuest: React.FC<Props> = (props) => {
       <SideNav />
       <DefaultLayout>
         <Content>
-          <Header title='Create a Quest' />
-          
+          <Header title="Create a Quest" />
+
           <h2>Select Date</h2>
 
           <DateWrapper>
@@ -124,18 +170,20 @@ const AddQuest: React.FC<Props> = (props) => {
               showPopperArrow={false}
             />
           </DateWrapper>
-          
 
-          <div className='break'/>
+          <div className="break" />
 
           <h2>Select Pokemon</h2>
-          <p>Select up to 3 Pokemon</p>
-          <PokemonGrid data={data} onChange={_onPokemonSelect}/>
+          {pokemonSelect.length <= 3 ? (
+            <p>Select up to 3 Pokemon</p>
+          ) : (
+            <p className="errorMsg">Select up to 3 Pokemon</p>
+          )}
+          <PokemonGrid data={data} onChange={_onPokemonSelect} />
 
-          <div className='break2'/>
+          <div className="break2" />
 
-          <SubmitBtn>Create</SubmitBtn>
-
+          <SubmitBtn onClick={_onSubmit}>Create</SubmitBtn>
         </Content>
       </DefaultLayout>
     </>
@@ -144,9 +192,9 @@ const AddQuest: React.FC<Props> = (props) => {
 
 // Call these on server side
 export async function getStaticProps() {
-
   try {
-    const pokemon_list = await axios.get(process.env.MISSION_MANAGEMENT_ADMIN + '/pokemon')
+    const pokemon_list = await axios
+      .get(process.env.MISSION_MANAGEMENT_ADMIN + '/pokemon')
       .then((res) => res.data.pokemon);
 
     return {
@@ -162,8 +210,7 @@ export async function getStaticProps() {
         data: error,
       },
     };
-  };  
+  }
 }
-
 
 export default AddQuest;

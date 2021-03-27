@@ -2,11 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
-import DefaultLayout from '../../components/layouts/DefaultLayout'
+import DefaultLayout from '../../components/layouts/DefaultLayout';
 import SEO from '../../components/SEO';
-import SideNav from '../../components/SideNav'
-import MissionNav from '../../components/MissionNav'
-
+import SideNav from '../../components/SideNav';
+import MissionNav from '../../components/MissionNav';
 
 const Content = styled.main`
   padding: 16px;

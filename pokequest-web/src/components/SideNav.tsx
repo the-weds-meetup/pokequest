@@ -4,10 +4,9 @@ import { GoogleLogout } from 'react-google-login';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-
 const SideNavLink = styled.div`
   margin: 0;
-  background-color: #29B6F6;
+  background-color: #29b6f6;
   width: 250px;
   display: flex;
   flex-direction: column;
@@ -22,7 +21,7 @@ const SideNavLink = styled.div`
 `;
 
 const SideNavLinkAdmin = styled(SideNavLink)`
-  background-color: #FF5252;
+  background-color: #ff5252;
 `;
 
 const StyledLink = styled.a`
@@ -34,7 +33,7 @@ const StyledLink = styled.a`
     border-radius: 8px;
 
     :hover {
-      background-color: #FFFFFF56;
+      background-color: #ffffff56;
     }
   }
 `;
@@ -51,9 +50,8 @@ const SideNav: React.FC = (props) => {
   const [adminMode, setAdminMode] = useState(false);
 
   useEffect(() => {
-    setAdminMode(
-      sessionStorage.getItem('admin') === 'true'
-    );
+    console.log(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
+    setAdminMode(sessionStorage.getItem('admin') === 'true');
   }, []);
 
   const _handleLogout = () => {
@@ -72,8 +70,8 @@ const SideNav: React.FC = (props) => {
 
       console.log('[admin mode]', toggleMode);
     }
-  }
-  
+  };
+
   return adminMode ? (
     <SideNavLinkAdmin>
       <h1 onClick={_activateAdmin}>PokeQuest</h1>
@@ -93,20 +91,24 @@ const SideNav: React.FC = (props) => {
       />
     </SideNavLink>
   );
-}
+};
 
 const NavLinkInternals: React.FC = () => {
   return (
     <>
       <Link href="/quests" passHref>
-        <StyledLink><div>Quests</div></StyledLink>
+        <StyledLink>
+          <div>Quests</div>
+        </StyledLink>
       </Link>
       <Link href="/pokemon" passHref>
-        <StyledLink><div>Your Pokemon</div></StyledLink>
+        <StyledLink>
+          <div>Your Pokemon</div>
+        </StyledLink>
       </Link>
-      <div style={{paddingTop: 24}} />
+      <div style={{ paddingTop: 24 }} />
     </>
-  )
-}
+  );
+};
 
 export default SideNav;
