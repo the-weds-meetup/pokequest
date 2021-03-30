@@ -1,3 +1,4 @@
+import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 
@@ -14,6 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 9001;
 
 app.use(express.json());
+app.use(cors());
 
 /**
  * MISSION_VIEW
@@ -48,10 +50,10 @@ app.get('/', (req, res) => res.send('MISSION_MANAGEMENT Microservice'));
 app.get('/mission/available/:user_id', getMissionsAvailable);
 
 // sign up for a mission
-app.post('/mission/:mission_id/', acceptMission);
+app.post('/mission/signup/:mission_id/', acceptMission);
 
 // get a mission's pokemons
-app.get('/mission/:mission_id', getMissionInformation);
+app.get('/mission/info/:mission_id', getMissionInformation);
 
 // get currently subscribed missions: array
 app.get('/mission/subscribe/:user_id', getMissionsSubscribed);

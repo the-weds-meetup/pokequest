@@ -1,3 +1,4 @@
+import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 
@@ -8,6 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 9002;
 
 app.use(express.json());
+app.use(cors());
 
 /**
  * ADD_POKEMON
