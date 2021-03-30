@@ -1,12 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 import SEO from '../../components/SEO';
 import SideNav from '../../components/SideNav';
 import MissionNav from '../../components/MissionNav';
 import AddButton from '../../components/AddMissionBtn';
+import QuestSection from '../../components/Quest/QuestSection';
 
 const Content = styled.main`
   padding: 16px;
@@ -18,10 +20,32 @@ const Content = styled.main`
 const Quests: React.FC = () => {
   const router = useRouter();
   const [adminMode, setAdminMode] = useState(false);
+  const [googleName, setGoogleName] = useState('');
+  const [googleId, setGoogleId] = useState('');
+
+  const [availableQuest, setAvailableQuest] = useState([]);
 
   useEffect(() => {
+    const id = sessionStorage.getItem('googleId');
     setAdminMode(sessionStorage.getItem('admin') === 'true');
-  }, []);
+    setGoogleName(sessionStorage.getItem('googleName'));
+    setGoogleId(id);
+
+    const getAvailableQuest = async () => {
+      return await axios
+        .get(
+          `${process.env.NEXT_PUBLIC_MISSION_MANAGEMENT}/mission/available/${id}`
+        )
+        .then((response) => {
+          const data = response.data.data;
+          setAvailableQuest(data);
+        })
+        .catch((error) => console.log(error));
+    };
+    getAvailableQuest();
+  }, [googleId]);
+
+  console.log(availableQuest);
 
   return (
     <>
@@ -34,54 +58,9 @@ const Quests: React.FC = () => {
 
           {adminMode && <AddButton />}
 
-          <div
-            style={{
-              padding: '24px',
-              width: '100%',
-              height: '120px',
-              backgroundColor: 'pink',
-            }}
-          />
-          <div
-            style={{
-              padding: '24px',
-              width: '100%',
-              height: '120px',
-              backgroundColor: 'pink',
-            }}
-          />
-          <div
-            style={{
-              padding: '24px',
-              width: '100%',
-              height: '120px',
-              backgroundColor: 'pink',
-            }}
-          />
-          <div
-            style={{
-              padding: '24px',
-              width: '100%',
-              height: '120px',
-              backgroundColor: 'pink',
-            }}
-          />
-          <div
-            style={{
-              padding: '24px',
-              width: '100%',
-              height: '120px',
-              backgroundColor: 'pink',
-            }}
-          />
-          <div
-            style={{
-              padding: '24px',
-              width: '100%',
-              height: '120px',
-              backgroundColor: 'pink',
-            }}
-          />
+          {availableQuest.length > 0 && (
+            <QuestSection title="Available" quests={availableQuest} />
+          )}
         </Content>
       </DefaultLayout>
     </>

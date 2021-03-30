@@ -106,16 +106,19 @@ const AddQuest: React.FC<Props> = (props) => {
 
   const _onStartDateChange = (date: Date) => {
     date.setHours(0, 0, 0, 0);
+    console.log(date);
     setStartDate(date);
   };
 
   const _onEndDateChange = (date: Date) => {
-    date.setHours(0, 0, 0, 0);
+    date.setHours(23, 59, 59, 999);
     setEndDate(date);
   };
 
   const _onSubmit = async () => {
     const dateError = endDate <= startDate;
+    _onStartDateChange(startDate);
+    _onEndDateChange(endDate);
 
     // check if meet the criteria
     // end date > start date
@@ -137,7 +140,7 @@ const AddQuest: React.FC<Props> = (props) => {
     // send response here
     await axios
       .post('/api/mission/add', payload)
-      .then(() => router.push('/quests'))
+      .then(() => router.push('/quests/available'))
       .catch((response) => {
         console.log(response.data);
       });

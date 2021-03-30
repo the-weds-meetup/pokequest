@@ -11,7 +11,6 @@ export default async (req, res) => {
       end_time: Date.parse(end_time),
     };
 
-    console.log(process.env.MISSION_MANAGEMENT_ADMIN);
     try {
       await axios.post(
         process.env.MISSION_MANAGEMENT_ADMIN + '/mission/add',
