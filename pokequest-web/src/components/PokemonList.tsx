@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from 'react';
 import styled from 'styled-components';
+import { PokemonProps } from '../interfaces';
 
 const PokeGrid = styled.div`
   display: grid;
@@ -30,12 +31,7 @@ const PokemonItem = styled.label`
 `;
 
 interface Props {
-  data: {
-    id: number;
-    name: string;
-    sprite: string;
-    official_artwork: string;
-  }[];
+  data: PokemonProps[];
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 

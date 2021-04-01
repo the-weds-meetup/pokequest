@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { GoogleLogout } from 'react-google-login';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -25,29 +23,23 @@ const Wrapper = styled.button`
 
   span {
     padding-left: 8px;
-    color: #00000087
+    color: #00000087;
   }
 `;
 
 const AddButton: React.FC = () => {
   const router = useRouter();
-  
+
   const _onClick = () => {
     router.push('/quests/add');
-  }
+  };
 
   return (
     <Wrapper onClick={_onClick}>
-      <Icon 
-        path={mdiPlus}
-        size={1}
-        horizontal
-        vertical
-        color='#00000087'
-      />
+      <Icon path={mdiPlus} size={1} horizontal vertical color="#00000087" />
       <span> Add a Quest</span>
     </Wrapper>
-  )
-}
+  );
+};
 
 export default AddButton;

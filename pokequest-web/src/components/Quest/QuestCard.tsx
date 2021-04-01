@@ -1,22 +1,9 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
+import { QuestProps } from '../../interfaces';
 
 interface Props {
-  quest: {
-    id: number;
-    start_time: string;
-    end_time: string;
-    creation_time: string;
-    is_complete: boolean;
-    pokemon: Pokemon[];
-  };
-}
-
-interface Pokemon {
-  id: number;
-  name: string;
-  sprite: string;
-  official_artwork: string;
+  quest: QuestProps;
 }
 
 const Card = styled.button`
@@ -32,6 +19,11 @@ const Card = styled.button`
   border-radius: 8px;
   border: 1px solid #00000012;
   background-color: #e3e3e3;
+  cursor: pointer;
+
+  :hover {
+    background-color: #cfcfcf;
+  }
 
   .time {
     display: flex;

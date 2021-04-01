@@ -2,23 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import QuestCard from './QuestCard';
 
+import { QuestProps } from '../../interfaces';
+
 interface Props {
   title: string;
-  quests: {
-    id: number;
-    start_time: string;
-    end_time: string;
-    creation_time: string;
-    is_complete: boolean;
-    pokemon: Pokemon[];
-  }[];
-}
-
-interface Pokemon {
-  id: number;
-  name: string;
-  sprite: string;
-  official_artwork: string;
+  quests: QuestProps[];
 }
 
 const Section = styled.div`

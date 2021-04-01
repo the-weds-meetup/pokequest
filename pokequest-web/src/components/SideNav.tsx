@@ -38,11 +38,6 @@ const StyledLink = styled.a`
   }
 `;
 
-const AdminButton = styled.button`
-  font-size: 2rem;
-  text-align: left;
-`;
-
 const SideNav: React.FC = (props) => {
   // const { href, name } = props;
   const router = useRouter();

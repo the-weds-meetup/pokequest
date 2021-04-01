@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 const Wrapper = styled.div`
-  background-color: #FAFAFA;
+  background-color: #fafafa;
   position: sticky;
   width: 400px;
   height: 60px;
@@ -40,7 +40,7 @@ const Line = styled.div`
   width: 1px;
   background-color: #00000027;
   marign: 0 auto;
-`
+`;
 
 const MissionNav: React.FC = (props) => {
   const router = useRouter();
@@ -48,19 +48,18 @@ const MissionNav: React.FC = (props) => {
   return (
     <Wrapper>
       <Link href="/quests" passHref>
-        <StyledLink >
+        <StyledLink>
           <div>Your Quests</div>
         </StyledLink>
       </Link>
       <Line />
       <Link href="/quests/available" passHref>
-        <StyledLink >
+        <StyledLink>
           <div>Available Quests</div>
         </StyledLink>
       </Link>
-
     </Wrapper>
-  )
-}
+  );
+};
 
 export default MissionNav;
