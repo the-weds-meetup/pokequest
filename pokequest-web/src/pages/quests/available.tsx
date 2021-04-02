@@ -23,31 +23,22 @@ const Content = styled.main`
 const Quests: React.FC = () => {
   const router = useRouter();
   const [adminMode, setAdminMode] = useState(false);
-  const [googleName, setGoogleName] = useState('');
   const [googleId, setGoogleId] = useState('');
   const [showModal, setShowModal] = useState(false);
-
+  const [availableQuest, setAvailableQuest] = useState([]);
   const [selectedQuest, setSelectedQuest] = useState<IQuest | undefined>(
     undefined
   );
 
-  const [availableQuest, setAvailableQuest] = useState([]);
-
   useEffect(() => {
     const id = sessionStorage.getItem('googleId');
     setAdminMode(sessionStorage.getItem('admin') === 'true');
-    setGoogleName(sessionStorage.getItem('googleName'));
     setGoogleId(id);
 
     const getAvailableQuest = async () => {
       return await axios
-        .get(
-          `${process.env.NEXT_PUBLIC_MISSION_MANAGEMENT}/mission/available/${id}`
-        )
-        .then((response) => {
-          const data = response.data.data;
-          setAvailableQuest(data);
-        })
+        .get(`/api/mission/available/${id}`)
+        .then((response) => setAvailableQuest(response.data.available))
         .catch((error) => console.log(error));
     };
     getAvailableQuest();
@@ -56,8 +47,6 @@ const Quests: React.FC = () => {
   const getQuestInfo = (quest: IQuest) => {
     setSelectedQuest(quest);
     setShowModal(true);
-
-    console.log(quest);
   };
 
   const closeModal = () => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 import ModalTemplate from './ModalTemplate';
 
@@ -36,6 +37,7 @@ const Modal: React.FC<Props> = (props) => {
   const [error, setError] = useState(false);
   const [googleName, setGoogleName] = useState('');
   const [googleId, setGoogleId] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     setGoogleId(sessionStorage.getItem('googleId'));
@@ -52,7 +54,7 @@ const Modal: React.FC<Props> = (props) => {
       };
       await axios
         .post('/api/mission/join/' + quest.id, payload)
-        .then(() => handleClose());
+        .then(() => router.push('/quests/available'));
     } catch (error) {
       console.log(error.message);
       setError(true);

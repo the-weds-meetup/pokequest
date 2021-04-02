@@ -3,7 +3,6 @@ import axios from 'axios';
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export default async (req, res) => {
   if (req.method === 'POST') {
-    console.log(req.query);
     const { id } = req.query;
 
     try {
