@@ -15,11 +15,12 @@ const TRAINER_MISSION_URL = `${process.env.TRAINER_MISSION_URL}`;
  * Get the available missions which are currently subscribed by the user
  * Returns the mission information
  */
-const getMissionsSubscribed = async (
+const getMissionsFuture = async (
   _req: Request,
   _res: Response
 ): Promise<void> => {
   const { user_id } = _req.params;
+  const date = Date.now();
 
   // get all the ongoing missions
   try {
@@ -37,7 +38,10 @@ const getMissionsSubscribed = async (
         return response.data.data.filter((mission) => {
           return trainerMissionList.includes(mission.id);
         });
-      });
+      })
+      .then((allMissions) =>
+        allMissions.filter((mission) => mission.start_time > date)
+      );
 
     // update the ongoingMissionInfo with Pokemon Names
     const ongoing = await Promise.all(
@@ -55,7 +59,7 @@ const getMissionsSubscribed = async (
     );
 
     _res.status(201).send({
-      date: Date.now(),
+      date: date,
       data: ongoing,
     });
   } catch (error) {
@@ -67,4 +71,4 @@ const getMissionsSubscribed = async (
   }
 };
 
-export default getMissionsSubscribed;
+export default getMissionsFuture;

@@ -8,7 +8,8 @@ import {
   getMissionPokemonCount,
   getMissionsAvailable,
   getMissionsComplete,
-  getMissionsSubscribed,
+  getMissionsFuture,
+  getMissionsNow,
   submitPokemon,
 } from './routes';
 
@@ -60,8 +61,11 @@ app.get('/mission/info/pokemon/:mission_id', getMissionInformation);
 // get a mission's submitted pokemon count
 app.get('/mission/info/count/:mission_id', getMissionPokemonCount);
 
-// get currently subscribed missions: array
-app.get('/mission/subscribe/:user_id', getMissionsSubscribed);
+// get currently subscribed missions happening now: array
+app.get('/mission/now/:user_id', getMissionsNow);
+
+// get currently subscribed missions happening in the future: array
+app.get('/mission/soon/:user_id', getMissionsFuture);
 
 // get completed missions: array
 app.get('/mission/complete/:user_id', getMissionsComplete);

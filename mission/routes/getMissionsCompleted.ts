@@ -29,7 +29,7 @@ const getMissionsCompleted = async (
 ): Promise<void> => {
   // get all missions where end time is more than the unix time now
   const query = {
-    text: 'SELECT * FROM mission WHERE end_time >= $1 ',
+    text: 'SELECT * FROM mission WHERE end_time <= $1 ',
     values: [Date.now()],
   };
 
