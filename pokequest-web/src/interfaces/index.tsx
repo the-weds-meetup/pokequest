@@ -1,15 +1,20 @@
-export interface QuestProps {
+export interface IQuest {
   id: number;
   start_time: string;
   end_time: string;
   creation_time: string;
   is_complete: boolean;
-  pokemon: PokemonProps[];
+  pokemon: IPokemon[];
 }
 
-export interface PokemonProps {
+export interface IPokemon {
   id: number;
   name: string;
   sprite: string;
   official_artwork: string;
+}
+
+export interface IPokemonCount {
+  pokemon?: IPokemon;
+  count?: number;
 }

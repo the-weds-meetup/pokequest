@@ -11,7 +11,7 @@ import Header from '../../components/SiteHeader';
 import PokemonGrid from '../../components/PokemonList';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import { PokemonProps } from '../../interfaces';
+import { IPokemon } from '../../interfaces';
 
 const Content = styled.main`
   padding: 16px;
@@ -61,7 +61,7 @@ const SubmitBtn = styled.button`
 
 interface Props {
   types: string;
-  data: PokemonProps[];
+  data: IPokemon[];
 }
 
 const AddQuest: React.FC<Props> = (props) => {

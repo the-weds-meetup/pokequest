@@ -1,10 +1,6 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { QuestProps } from '../../interfaces';
-
-interface Props {
-  quest: QuestProps;
-}
+import { IQuest } from '../../interfaces';
 
 const Card = styled.button`
   width: 100%;
@@ -41,10 +37,14 @@ const Card = styled.button`
   }
 `;
 
+interface Props {
+  quest: IQuest;
+  setCurrentQuest?: (quest: IQuest) => void | undefined;
+}
+
 const QuestCard: React.FC<Props> = (props) => {
-  const {
-    quest: { end_time, pokemon: pokemonList },
-  } = props;
+  const { quest, setCurrentQuest } = props;
+  const { end_time, pokemon: pokemonList } = quest;
 
   const endTime = useMemo(() => {
     const date = new Date(parseInt(end_time));
@@ -57,10 +57,14 @@ const QuestCard: React.FC<Props> = (props) => {
     return `${day}/${month}/${year} ${hour}:${mins}`;
   }, [end_time]);
 
-  console.log(pokemonList);
+  const selectQuest = () => {
+    if (setCurrentQuest) {
+      setCurrentQuest(quest);
+    }
+  };
 
   return (
-    <Card>
+    <Card onClick={() => selectQuest()}>
       <div className="pokemon">
         {pokemonList.map((pokemon) => (
           <img key={pokemon.id} src={pokemon.sprite} />

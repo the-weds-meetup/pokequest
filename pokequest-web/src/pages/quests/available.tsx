@@ -9,6 +9,9 @@ import SideNav from '../../components/SideNav';
 import MissionNav from '../../components/MissionNav';
 import AddButton from '../../components/AddMissionBtn';
 import QuestSection from '../../components/Quest/QuestSection';
+import Modal from '../../components/Modal/ModalOngoing';
+
+import { IQuest } from '../../interfaces';
 
 const Content = styled.main`
   padding: 16px;
@@ -22,6 +25,11 @@ const Quests: React.FC = () => {
   const [adminMode, setAdminMode] = useState(false);
   const [googleName, setGoogleName] = useState('');
   const [googleId, setGoogleId] = useState('');
+  const [showModal, setShowModal] = useState(false);
+
+  const [selectedQuest, setSelectedQuest] = useState<IQuest | undefined>(
+    undefined
+  );
 
   const [availableQuest, setAvailableQuest] = useState([]);
 
@@ -45,7 +53,17 @@ const Quests: React.FC = () => {
     getAvailableQuest();
   }, [googleId]);
 
-  console.log(availableQuest);
+  const getQuestInfo = (quest: IQuest) => {
+    setSelectedQuest(quest);
+    setShowModal(true);
+
+    console.log(quest);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedQuest(undefined);
+  };
 
   return (
     <>
@@ -59,7 +77,19 @@ const Quests: React.FC = () => {
           {adminMode && <AddButton />}
 
           {availableQuest.length > 0 && (
-            <QuestSection title="Available" quests={availableQuest} />
+            <QuestSection
+              title="Available"
+              quests={availableQuest}
+              setCurrentQuest={getQuestInfo}
+            />
+          )}
+
+          {showModal && (
+            <Modal
+              type="available"
+              quest={selectedQuest}
+              handleClose={closeModal}
+            />
           )}
         </Content>
       </DefaultLayout>
