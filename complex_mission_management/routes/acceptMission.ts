@@ -30,7 +30,7 @@ const acceptMission = async (_req: Request, _res: Response): Promise<void> => {
     // if end_time is >= the time now, it is over
     await axios.get(MISSION_URL + `/mission/${mission_id}`).then((response) => {
       const mission = response.data.data;
-      if (mission.end_time >= Date.now()) {
+      if (Date.now() >= mission.end_time) {
         throw { msg: 'Too late' };
       }
     });

@@ -60,7 +60,7 @@ const getMissionsAvailable = async (
       data: ongoing,
     });
   } catch (error) {
-    console.log('[COMPLES MISSION VIEW]', error);
+    console.log('[COMPLEX MISSION VIEW]', error);
     _res.status(500).send({
       date: Date.now(),
       data: error,

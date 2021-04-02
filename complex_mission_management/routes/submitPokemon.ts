@@ -27,7 +27,7 @@ const submitPokemon = async (_req: Request, _res: Response): Promise<void> => {
     if (!trainer_id) {
       throw { msg: 'Missing Trainer ID' };
     } else if (Object.keys(pokemon_list).length === 0) {
-      throw { msg: 'Missing Trainer Name' };
+      throw { msg: 'Pokemon List empty' };
     }
 
     const pokemon_list_keys = Object.keys(pokemon_list);

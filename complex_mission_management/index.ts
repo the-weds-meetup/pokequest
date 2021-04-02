@@ -5,7 +5,9 @@ import express from 'express';
 import {
   acceptMission,
   getMissionInformation,
+  getMissionPokemonCount,
   getMissionsAvailable,
+  getMissionsComplete,
   getMissionsSubscribed,
   submitPokemon,
 } from './routes';
@@ -53,13 +55,16 @@ app.get('/mission/available/:user_id', getMissionsAvailable);
 app.post('/mission/signup/:mission_id/', acceptMission);
 
 // get a mission's pokemons
-app.get('/mission/info/:mission_id', getMissionInformation);
+app.get('/mission/info/pokemon/:mission_id', getMissionInformation);
+
+// get a mission's submitted pokemon count
+app.get('/mission/info/count/:mission_id', getMissionPokemonCount);
 
 // get currently subscribed missions: array
 app.get('/mission/subscribe/:user_id', getMissionsSubscribed);
 
 // get completed missions: array
-app.get('/mission/complete/:user_id', getMissionsSubscribed);
+app.get('/mission/complete/:user_id', getMissionsComplete);
 
 // submit pokemon to mission
 app.post('/mission/submit/:mission_id', submitPokemon);

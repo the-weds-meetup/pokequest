@@ -5,6 +5,7 @@ import {
   addPokemon,
   getAllPokemon,
   getCaughtPokemon,
+  getCaughtPokemonById,
   updatePokemonStatus,
 } from './routes';
 
@@ -16,7 +17,8 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send('Trainer Pokemons Microservice'));
 
-app.get('/inventory/:trainer_id', getAllPokemon);
+app.get('/inventory/info/trainer/:trainer_id', getAllPokemon);
+app.get('/inventory/info/id/:inventory_id', getCaughtPokemonById);
 app.get('/inventory/caught/:trainer_id', getCaughtPokemon);
 app.post('/inventory/add/:trainer_id/:pokemon_id', addPokemon);
 app.post('/inventory/update/:pokemon_id', updatePokemonStatus);
