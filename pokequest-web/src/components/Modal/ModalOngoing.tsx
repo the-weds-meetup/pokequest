@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-import ModalTemplate from './ModalTemplate';
+import { ModalTitle, ModalTemplate, ModalBody } from './components';
 
 import { IQuest } from '../../interfaces';
 
@@ -46,7 +46,6 @@ const Modal: React.FC<Props> = (props) => {
 
   const joinQuest = async () => {
     setError(false);
-    console.log(googleId);
     try {
       const payload = {
         trainer_id: googleId,
@@ -63,6 +62,8 @@ const Modal: React.FC<Props> = (props) => {
 
   return (
     <ModalTemplate type={type} quest={quest} handleClose={handleClose}>
+      <ModalTitle quest={quest} handleClose={handleClose} />
+      <ModalBody quest={quest} />
       <JoinButton>
         <button type="button" onClick={() => joinQuest()}>
           Join Quest

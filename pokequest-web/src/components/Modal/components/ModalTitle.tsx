@@ -2,41 +2,15 @@ import React, { useMemo, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
-import axios from 'axios';
 
-import { ModalBody } from './ModalBody';
-
-import { IPokemonCount, IQuest } from '../../interfaces';
+import { IQuest } from '../../../interfaces';
 
 interface Props {
-  type: 'available' | 'accepted' | 'await';
   quest: IQuest;
   handleClose: () => void;
 }
 
-const ModalWrapper = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #00000060;
-
-  .modal-card {
-    position: fixed;
-    background: #ffffff;
-    width: 80%;
-    height: auto;
-    min-height: 300px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 32px;
-    border-radius: 8px;
-  }
-`;
-
-const ModalHeader = styled.div`
+const HeaderWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -63,19 +37,15 @@ const ModalHeader = styled.div`
   }
 `;
 
-const Modal: React.FC<Props> = (props) => {
-  const { quest, handleClose, children } = props;
+const ModalHeader: React.FC<Props> = (props) => {
+  const { quest, handleClose } = props;
   const [timezoneStr, setTimezoneStr] = useState('UTC');
-  const [missionPokemonCount, setmissionPokemonCount] = useState<
-    IPokemonCount[]
-  >([]);
   // const []
 
   useEffect(() => {
     const getTime = () => {
       const date = new Date();
       const offset = date.getTimezoneOffset() / -60;
-
       switch (true) {
         case offset > 0:
           setTimezoneStr(`UTC +${offset}`);
@@ -89,18 +59,7 @@ const Modal: React.FC<Props> = (props) => {
           setTimezoneStr('UTC');
       }
     };
-
-    const getPokemonCollected = async () => {
-      const server_count = await axios
-        .get(
-          `${process.env.NEXT_PUBLIC_MISSION_MANAGEMENT}/mission/info/count/${quest.id}`
-        )
-        .then((response) => response.data.data);
-      setmissionPokemonCount(server_count);
-    };
-
     getTime();
-    getPokemonCollected();
   }, []);
 
   const title = useMemo(() => {
@@ -154,30 +113,24 @@ const Modal: React.FC<Props> = (props) => {
   }, [quest]);
 
   return (
-    <ModalWrapper>
-      <div className="modal-card">
-        <ModalHeader>
-          <div>
-            <h1>{title}</h1>
-            <p>
-              {questPeriodStr} ({timezoneStr})
-            </p>
-          </div>
-          <button onClick={handleClose}>
-            <Icon
-              path={mdiClose}
-              size={1.4}
-              horizontal
-              vertical
-              color="#00000087"
-            />
-          </button>
-        </ModalHeader>
-        <ModalBody quest={quest} pokemonCount={missionPokemonCount} />
-        {children}
+    <HeaderWrapper>
+      <div>
+        <h1>{title}</h1>
+        <p>
+          {questPeriodStr} ({timezoneStr})
+        </p>
       </div>
-    </ModalWrapper>
+      <button onClick={handleClose}>
+        <Icon
+          path={mdiClose}
+          size={1.4}
+          horizontal
+          vertical
+          color="#00000087"
+        />
+      </button>
+    </HeaderWrapper>
   );
 };
 
-export default Modal;
+export default ModalHeader;

@@ -1,11 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
-import { IQuest, IPokemonCount } from '../../interfaces';
+import { IQuest, IPokemonCount } from '../../../interfaces';
 
 interface Props {
   quest: IQuest;
-  pokemonCount: IPokemonCount[];
 }
 
 const BodyWapper = styled.div`
@@ -72,15 +72,26 @@ const PokeCounter = styled.div`
   }
 `;
 
-export const ModalBody: React.FC<Props> = (props) => {
+const ModalBody: React.FC<Props> = (props) => {
   const {
-    quest: { pokemon: pokemonList },
-    pokemonCount,
+    quest: { id, pokemon: pokemonList },
   } = props;
 
+  const [globalStats, setGlobalStats] = useState<IPokemonCount[]>([]);
+
+  useEffect(() => {
+    const getGlobalStats = async () => {
+      const data = await axios
+        .get('/api/mission/info/count/' + id)
+        .then((response) => response.data);
+      setGlobalStats(data);
+    };
+    getGlobalStats();
+  }, []);
+
   const isLoading = useMemo(() => {
-    return pokemonCount.length === 0;
-  }, [pokemonCount]);
+    return globalStats.length === 0;
+  }, [globalStats]);
 
   return (
     <BodyWapper>
@@ -99,7 +110,7 @@ export const ModalBody: React.FC<Props> = (props) => {
           <div className="pokemon-img">
             {isLoading
               ? 'loading...'
-              : pokemonCount.map((pokemon) => (
+              : globalStats.map((pokemon) => (
                   <div className="pokemon-count" key={pokemon.pokemon.id}>
                     <PokemonImageSmall>
                       <img src={pokemon.pokemon.sprite} />
@@ -113,3 +124,5 @@ export const ModalBody: React.FC<Props> = (props) => {
     </BodyWapper>
   );
 };
+
+export default ModalBody;
