@@ -9,7 +9,7 @@ import SideNav from '../../components/SideNav';
 import MissionNav from '../../components/MissionNav';
 import AddButton from '../../components/AddMissionBtn';
 import QuestSection from '../../components/Quest/QuestSection';
-import Modal from '../../components/Modal/ModalOngoing';
+import Modal from '../../components/Modal/ModalAvailable';
 
 import { IQuest } from '../../interfaces';
 

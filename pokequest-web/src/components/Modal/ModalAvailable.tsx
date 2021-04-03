@@ -8,7 +8,6 @@ import { ModalTitle, ModalTemplate, ModalBody } from './components';
 import { IQuest } from '../../interfaces';
 
 interface Props {
-  type: 'available' | 'accepted' | 'await';
   quest: IQuest;
   handleClose: () => void;
 }
@@ -33,7 +32,7 @@ const JoinButton = styled.div`
 `;
 
 const Modal: React.FC<Props> = (props) => {
-  const { type, quest, handleClose } = props;
+  const { quest, handleClose } = props;
   const [error, setError] = useState(false);
   const [googleName, setGoogleName] = useState('');
   const [googleId, setGoogleId] = useState('');
@@ -61,7 +60,7 @@ const Modal: React.FC<Props> = (props) => {
   };
 
   return (
-    <ModalTemplate type={type} quest={quest} handleClose={handleClose}>
+    <ModalTemplate>
       <ModalTitle quest={quest} handleClose={handleClose} />
       <ModalBody quest={quest} />
       <JoinButton>
