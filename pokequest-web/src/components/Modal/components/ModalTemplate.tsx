@@ -1,13 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-
-import { IQuest } from '../../../interfaces';
-
-interface Props {
-  type: 'available' | 'accepted' | 'await';
-  quest: IQuest;
-  handleClose: () => void;
-}
 
 const ModalWrapper = styled.div`
   position: fixed;
@@ -31,7 +23,7 @@ const ModalWrapper = styled.div`
   }
 `;
 
-const Modal: React.FC<Props> = (props) => {
+const Modal: React.FC = (props) => {
   const { children } = props;
 
   return (

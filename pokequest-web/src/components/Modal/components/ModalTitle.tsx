@@ -2,33 +2,46 @@ import React, { useMemo, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
+import { TabBar } from './';
 
 import { IQuest } from '../../../interfaces';
 
 interface Props {
   quest: IQuest;
+  tabNames?: string[];
+  currentIndex?: number;
   handleClose: () => void;
+  handleTabChange?: (index: number) => void;
 }
 
-const HeaderWrapper = styled.div`
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-bottom: #00000027 1px solid;
+
+  p {
+    margin: 0;
+    font-weight: 500;
+    color: #00000078;
+  }
+
+  .padding {
+    padding-bottom: 16px;
+  }
+`;
+
+const Title = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
-  padding-bottom: 16px;
-  border-bottom: #00000027 1px solid;
+  width: 100%;
 
   button {
     height: inherit;
     border: 0;
     display: flex;
     background-color: #fff;
-  }
-
-  p {
-    margin: 0;
-    font-weight: 500;
-    color: #00000078;
+    cursor: pointer;
   }
 
   h1 {
@@ -38,7 +51,7 @@ const HeaderWrapper = styled.div`
 `;
 
 const ModalHeader: React.FC<Props> = (props) => {
-  const { quest, handleClose } = props;
+  const { quest, tabNames, currentIndex, handleTabChange, handleClose } = props;
   const [timezoneStr, setTimezoneStr] = useState('UTC');
   // const []
 
@@ -113,24 +126,34 @@ const ModalHeader: React.FC<Props> = (props) => {
   }, [quest]);
 
   return (
-    <HeaderWrapper>
-      <div>
+    <Wrapper>
+      <Title>
         <h1>{title}</h1>
-        <p>
-          {questPeriodStr} ({timezoneStr})
-        </p>
-      </div>
-      <button onClick={handleClose}>
-        <Icon
-          path={mdiClose}
-          size={1.4}
-          horizontal
-          vertical
-          color="#00000087"
+        <button onClick={handleClose}>
+          <Icon path={mdiClose} size={1.4} horizontal color="#00000087" />
+        </button>
+      </Title>
+      <p>
+        {questPeriodStr} ({timezoneStr})
+      </p>
+
+      {tabNames.length === 0 ? (
+        <div className="padding" />
+      ) : (
+        <TabBar
+          currentIndex={currentIndex}
+          tabNames={tabNames}
+          handleTabChange={handleTabChange}
         />
-      </button>
-    </HeaderWrapper>
+      )}
+    </Wrapper>
   );
+};
+
+ModalHeader.defaultProps = {
+  currentIndex: 0,
+  tabNames: [],
+  handleTabChange: undefined,
 };
 
 export default ModalHeader;

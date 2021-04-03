@@ -7,7 +7,7 @@ import DefaultLayout from '../../components/layouts/DefaultLayout';
 import SEO from '../../components/SEO';
 import SideNav from '../../components/SideNav';
 import MissionNav from '../../components/MissionNav';
-import Modal from '../../components/Modal/ModalOngoing';
+import Modal from '../../components/Modal/ModalAccepted';
 import QuestSection from '../../components/Quest/QuestSection';
 
 import { IQuest } from '../../interfaces';
@@ -26,6 +26,7 @@ const Quests: React.FC = () => {
   const [ongoingQuest, setOngoingQuest] = useState([]);
   const [futureQuest, setFutureQuest] = useState([]);
   const [completedQuest, setCompletedQuest] = useState([]);
+  const [modalType, setModalType] = useState<'now' | 'future' | 'past'>('now');
   const [selectedQuest, setSelectedQuest] = useState<IQuest | undefined>(
     undefined
   );
@@ -49,7 +50,20 @@ const Quests: React.FC = () => {
     getSubscribedQuest();
   }, []);
 
-  const getQuestInfo = (quest: IQuest) => {
+  const getPresentQuest = (quest: IQuest) => {
+    setModalType('now');
+    setSelectedQuest(quest);
+    setShowModal(true);
+  };
+
+  const getFutureQuest = (quest: IQuest) => {
+    setModalType('future');
+    setSelectedQuest(quest);
+    setShowModal(true);
+  };
+
+  const getPastQuest = (quest: IQuest) => {
+    setModalType('past');
     setSelectedQuest(quest);
     setShowModal(true);
   };
@@ -72,7 +86,7 @@ const Quests: React.FC = () => {
             <QuestSection
               title="In Progress"
               quests={ongoingQuest}
-              setCurrentQuest={getQuestInfo}
+              setCurrentQuest={getPresentQuest}
             />
           )}
 
@@ -80,7 +94,7 @@ const Quests: React.FC = () => {
             <QuestSection
               title="Upcoming Quests"
               quests={futureQuest}
-              setCurrentQuest={getQuestInfo}
+              setCurrentQuest={getFutureQuest}
             />
           )}
 
@@ -88,7 +102,15 @@ const Quests: React.FC = () => {
             <QuestSection
               title="Past Quests"
               quests={completedQuest}
-              setCurrentQuest={getQuestInfo}
+              setCurrentQuest={getPastQuest}
+            />
+          )}
+
+          {showModal && (
+            <Modal
+              type={modalType}
+              quest={selectedQuest}
+              handleClose={closeModal}
             />
           )}
         </Content>
