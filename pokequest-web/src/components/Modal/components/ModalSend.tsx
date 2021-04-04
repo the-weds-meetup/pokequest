@@ -1,11 +1,20 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import InputNumber from 'rc-input-number';
 
-import { IQuest, IPokemonCount } from '../../../interfaces';
+import { IQuest } from '../../../interfaces';
+
+interface IInventoryCount {
+  count: number;
+  inventory: number[];
+}
 
 interface Props {
   quest: IQuest;
+  pokemonCount: Record<string, IInventoryCount>;
+  trainerID: string;
+  onAfterSubmit?: () => void;
 }
 
 const BodyWapper = styled.div`
@@ -17,66 +26,131 @@ const BodyWapper = styled.div`
       margin: 0;
       padding-bottom: 16px;
     }
+  }
+`;
 
-    .pokemon-img {
-      display: flex;
-      flex-direction: row;
+const PickerWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+
+  .picker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 16px;
+
+    p {
+      margin: 0;
+      padding-top: 16px;
+      font-weight: 500;
     }
   }
-`;
-
-const PokemonImage = styled.div`
-  width: 50px;
-  height: 50px;
-  margin-right: 12px;
 
   img {
-    overflow: hidden;
-    width: 100px;
-    height: 100px;
-    margin: -50%;
+    width: 120px;
   }
 `;
 
-const PokemonImageSmall = styled.div`
-  width: 45px;
-  height: 45px;
+const ButtonWrapper = styled.div`
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  padding-top: 32px;
 
-  img {
-    overflow: hidden;
-    width: 90px;
-    height: 90px;
-    margin: -50%;
+  button {
+    margin: 0 auto;
+    padding: 16px 32px;
+    min-width: 300px;
+
+    background-color: #037bff;
+    border-radius: 4px;
+    border: #00000027 1px solid;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+
+  button :disabled {
+    background-color: #00000056;
+    color: black;
   }
 `;
 
-const ModalBody: React.FC<Props> = (props) => {
+const ModalSend: React.FC<Props> = (props) => {
   const {
-    quest: { id, pokemon: pokemonList },
+    quest: { id: quest_id, pokemon: pokemonList },
+    pokemonCount,
+    trainerID,
+    onAfterSubmit,
   } = props;
 
-  const [globalStats, setGlobalStats] = useState<IPokemonCount[]>([]);
+  const [poke1, setPoke1] = useState(0);
+  const [poke2, setPoke2] = useState(0);
+  const [poke3, setPoke3] = useState(0);
+  const pokeList = [poke1, poke2, poke3];
+  const setPokeList = [setPoke1, setPoke2, setPoke3];
 
-  const isLoading = useMemo(() => {
-    return globalStats.length === 0;
-  }, [globalStats]);
+  const canSubmit = useMemo(() => {
+    return poke1 > 0 || poke2 > 0 || poke3 > 0;
+  }, [poke1, poke2, poke3]);
+
+  const onSubmit = async () => {
+    const data: Record<number, number> = {};
+    pokemonList.map((pokemon, index) => {
+      const pokeId = pokemon.id;
+      if (pokeList[index] > 0) {
+        data[pokeId] = pokeList[index];
+      }
+    });
+
+    await axios
+      .post(`/api/mission/send/${quest_id}`, {
+        trainer_id: trainerID,
+        pokemon_list: data,
+      })
+      .then(() => onAfterSubmit());
+  };
+
+  const Picker = () =>
+    pokemonList.map((pokemon, index) => {
+      const max = pokemonCount[`${pokemon.id}`].count;
+      const isDisabled = max === 0;
+
+      return (
+        <div className="picker" key={index}>
+          <img src={pokemon.sprite} />
+          <InputNumber
+            pattern="\d*"
+            step={1}
+            defaultValue={0}
+            value={pokeList[index]}
+            min={0}
+            max={max}
+            disabled={isDisabled}
+            onChange={(value: number) => setPokeList[index](value)}
+          />
+          <p>
+            You have {max} {pokemon.name}
+          </p>
+        </div>
+      );
+    });
 
   return (
     <BodyWapper>
       <div className="pokemon">
         <h3>Send Pokemon to Professor Oak</h3>
-        <div className="pokemon-img">
-          {pokemonList.map((pokemon) => (
-            <PokemonImage key={pokemon.id}>
-              <img src={pokemon.sprite} />
-            </PokemonImage>
-          ))}
-        </div>
+        <PickerWrapper>{Picker()}</PickerWrapper>
+        <ButtonWrapper>
+          <button disabled={!canSubmit} onClick={() => onSubmit()}>
+            Send Pokemon
+          </button>
+        </ButtonWrapper>
       </div>
     </BodyWapper>
   );
 };
 
-export default ModalBody;
+export default ModalSend;

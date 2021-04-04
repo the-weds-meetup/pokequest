@@ -65,7 +65,7 @@ const Quests: React.FC = () => {
 
   const getTrainerPokemon = async (id: string) => {
     return await axios
-      .post(`/api/pokemon/inventory`, {
+      .post(`/api/pokemon/inventory/all`, {
         trainer_id: id,
       })
       .then((response) => {
