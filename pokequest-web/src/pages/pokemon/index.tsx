@@ -48,14 +48,6 @@ const Quests: React.FC = () => {
   const [trainerPokemon, setTrainerPokemon] = useState<InventoryProps[] | []>(
     []
   );
-  // const [showModal, setShowModal] = useState(false);
-  // const [ongoingQuest, setOngoingQuest] = useState([]);
-  // const [futureQuest, setFutureQuest] = useState([]);
-  // const [completedQuest, setCompletedQuest] = useState([]);
-  // const [modalType, setModalType] = useState<'now' | 'future' | 'past'>('now');
-  // const [selectedQuest, setSelectedQuest] = useState<IQuest | undefined>(
-  //   undefined
-  // );
 
   useEffect(() => {
     const id = sessionStorage.getItem('googleId');
@@ -74,8 +66,6 @@ const Quests: React.FC = () => {
       })
       .catch((error) => console.log(error));
   };
-
-  console.log(trainerPokemon);
 
   return (
     <>
@@ -104,7 +94,7 @@ const Quests: React.FC = () => {
               ))}
             </PokeGrid>
           ) : (
-            <>hi</>
+            <>loading</>
           )}
         </Content>
       </DefaultLayout>

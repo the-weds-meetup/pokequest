@@ -53,7 +53,7 @@ const Modal: React.FC<Props> = (props) => {
       };
       await axios
         .post('/api/mission/join/' + quest.id, payload)
-        .then(() => router.push('/quests/available'));
+        .then(() => router.push('/quests'));
     } catch (error) {
       console.log(error.message);
       setError(true);

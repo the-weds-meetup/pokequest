@@ -107,7 +107,6 @@ const AddQuest: React.FC<Props> = (props) => {
 
   const _onStartDateChange = (date: Date) => {
     date.setHours(0, 0, 0, 0);
-    console.log(date);
     setStartDate(date);
   };
 
