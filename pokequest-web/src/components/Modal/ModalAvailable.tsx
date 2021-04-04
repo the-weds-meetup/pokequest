@@ -28,6 +28,7 @@ const JoinButton = styled.div`
     border: #00000027 1px solid;
     color: white;
     font-size: 1.2em;
+    cursor: pointer;
   }
 `;
 
