@@ -25,6 +25,19 @@ services:
       - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql
 
   ###################################
+  # RABBIT_MQ
+  ###################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq:pokequest
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - pokequest_data:/var/lib/rabbitmq
+
+  ###################################
   # SERVICE: pokemon
   ###################################
   pokemon:
