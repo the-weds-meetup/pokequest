@@ -4,11 +4,12 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Image from 'next/image';
 
+import { useAppContext } from '../../context/state';
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 import SEO from '../../components/SEO';
 import SideNav from '../../components/SideNav';
 import { AutoCatcher } from '../../components/Button';
-import Modal from '../../components/Modal/ModalAccepted';
+import Modal from '../../components/Modal/ModalPokemon';
 
 import { IPokemon } from '../../interfaces';
 import { fromPairs } from 'lodash';
@@ -43,28 +44,38 @@ const PokeGrid = styled.div`
 `;
 
 const Quests: React.FC = () => {
-  const router = useRouter();
-  const [googleId, setGoogleId] = useState('');
+  const { googleId } = useAppContext();
+  const [showModal, setShowModal] = useState(false);
+  const [caughtPokemon, setCaughtPokemon] = useState<IPokemon[] | []>([]);
   const [trainerPokemon, setTrainerPokemon] = useState<InventoryProps[] | []>(
     []
   );
 
   useEffect(() => {
-    const id = sessionStorage.getItem('googleId');
-    setGoogleId(id);
-    getTrainerPokemon(id);
+    getTrainerPokemon();
   }, []);
 
-  const getTrainerPokemon = async (id: string) => {
+  const getTrainerPokemon = async () => {
     return await axios
       .post(`/api/pokemon/inventory/all`, {
-        trainer_id: id,
+        trainer_id: googleId,
       })
       .then((response) => {
         const data = response.data;
         setTrainerPokemon(data.available.pokemon);
       })
       .catch((error) => console.log(error));
+  };
+
+  const handleCaught = (pokemon: IPokemon[]) => {
+    getTrainerPokemon();
+    setCaughtPokemon(pokemon);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setCaughtPokemon([]);
   };
 
   return (
@@ -83,7 +94,7 @@ const Quests: React.FC = () => {
         </div>
 
         <Content>
-          <AutoCatcher handleClick={getTrainerPokemon} />
+          <AutoCatcher handleClick={handleCaught} />
 
           {trainerPokemon.length > 0 ? (
             <PokeGrid>
@@ -95,6 +106,10 @@ const Quests: React.FC = () => {
             </PokeGrid>
           ) : (
             <>loading</>
+          )}
+
+          {showModal && (
+            <Modal pokemon={caughtPokemon} handleClose={closeModal} />
           )}
         </Content>
       </DefaultLayout>

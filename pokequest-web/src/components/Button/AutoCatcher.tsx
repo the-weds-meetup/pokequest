@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
+import { useAppContext } from '../../context/state';
 import { IPokemon } from '../../interfaces';
 
 interface Props {
-  handleClick: (id: string) => void;
+  handleClick: (pokemon: IPokemon) => void;
 }
 
 const Wrapper = styled.div`
@@ -35,19 +36,13 @@ const Wrapper = styled.div`
 
 const Button: React.FC<Props> = (props) => {
   const { handleClick } = props;
-  const [googleId, setGoogleId] = useState('');
-  const [pokemonCaught, setPokemonCaught] = useState<IPokemon[] | []>([]);
-
-  useEffect(() => {
-    setGoogleId(sessionStorage.getItem('googleId'));
-  }, []);
+  const { googleId } = useAppContext();
 
   const catchPokemon = async () => {
     await axios
       .post('/api/pokemon/add', { trainer_id: googleId })
       .then((response) => {
-        setPokemonCaught(response.data.pokemon);
-        handleClick(googleId);
+        handleClick(response.data.pokemon);
       })
       .catch((error) => console.log(error));
   };
