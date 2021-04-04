@@ -1,4 +1,4 @@
-import { ITrainerPokemon } from '../modules/interfaces';
+import { ITrainerPokemon } from './interfaces';
 
 interface InventoryCount {
   count: number;
