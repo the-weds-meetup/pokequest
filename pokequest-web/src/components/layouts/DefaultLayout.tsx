@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 
+import { useAppContext } from '../../context/state';
+
 const Wrapper = styled.div`
   display: block;
   flex-direction: row;
@@ -17,13 +19,11 @@ const Wrapper = styled.div`
 
 const DefaultLayout: React.FC = (props) => {
   const { children } = props;
+  const { googleName, googleId } = useAppContext();
   const router = useRouter();
 
   useEffect(() => {
-    if (
-      !sessionStorage.getItem('googleId') ||
-      !sessionStorage.getItem('googleName')
-    ) {
+    if (!googleName || !googleId) {
       router.replace('/');
     }
   });

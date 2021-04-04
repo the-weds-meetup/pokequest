@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { GoogleLogout } from 'react-google-login';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useAppContext } from '../context/state';
 
 const SideNavLink = styled.div`
   margin: 0;
@@ -19,10 +20,6 @@ const SideNavLink = styled.div`
   h1 {
     padding: 0 12px;
   }
-`;
-
-const SideNavLinkAdmin = styled(SideNavLink)`
-  background-color: #ff5252;
 `;
 
 const StyledLink = styled.a`
@@ -43,43 +40,33 @@ const SideNav: React.FC = (props) => {
   // const { href, name } = props;
   const router = useRouter();
   const [press, setPress] = useState(1);
-  const [adminMode, setAdminMode] = useState(false);
-
-  useEffect(() => {
-    console.log(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
-    setAdminMode(sessionStorage.getItem('admin') === 'true');
-  }, []);
+  const { adminMode, setAdminMode } = useAppContext();
 
   const _handleLogout = () => {
     sessionStorage.clear();
     router.push('/');
   };
 
-  const _activateAdmin = () => {
+  const onAdminChange = () => {
     setPress(press + 1);
     // toggle adminMode on or off
     if (press >= 5) {
-      const toggleMode = !adminMode;
-      setAdminMode(toggleMode);
-      sessionStorage.setItem('admin', `${toggleMode}`);
+      setAdminMode();
       setPress(1);
-
-      console.log('[admin mode]', toggleMode);
     }
   };
 
-  return adminMode ? (
-    <SideNavLinkAdmin>
-      <h1 onClick={_activateAdmin}>PokeQuest</h1>
-      <NavLinkInternals />
-      <GoogleLogout
-        clientId={`${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}`}
-        onLogoutSuccess={_handleLogout}
-      />
-    </SideNavLinkAdmin>
-  ) : (
-    <SideNavLink>
-      <h1 onClick={_activateAdmin}>PokeQuest</h1>
+  const adminStyles = useMemo(() => {
+    return !adminMode
+      ? undefined
+      : {
+          backgroundColor: '#ff5252',
+        };
+  }, [adminMode]);
+
+  return (
+    <SideNavLink style={adminStyles}>
+      <h1 onClick={onAdminChange}>PokeQuest</h1>
       <NavLinkInternals />
       <GoogleLogout
         clientId={`${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}`}

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
+import { useAppContext } from '../../context/state';
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 import SEO from '../../components/SEO';
 import SideNav from '../../components/SideNav';
@@ -25,7 +26,7 @@ const Content = styled.main`
 
 const Quests: React.FC = () => {
   const router = useRouter();
-  const [googleId, setGoogleId] = useState('');
+  const { googleId } = useAppContext();
   const [showModal, setShowModal] = useState(false);
   const [ongoingQuest, setOngoingQuest] = useState([]);
   const [futureQuest, setFutureQuest] = useState([]);
@@ -36,12 +37,9 @@ const Quests: React.FC = () => {
   );
 
   useEffect(() => {
-    const id = sessionStorage.getItem('googleId');
-    setGoogleId(id);
-
     const getSubscribedQuest = async () => {
       return await axios
-        .get(`/api/mission/subscribed/${id}`)
+        .get(`/api/mission/subscribed/${googleId}`)
         .then((response) => {
           const data = response.data;
           setOngoingQuest(data.ongoing);

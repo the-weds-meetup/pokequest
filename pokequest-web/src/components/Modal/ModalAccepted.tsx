@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
+import { useAppContext } from '../../context/state';
 import { ModalTitle, ModalTemplate, ModalBody, ModalSend } from './components';
 
 import { IQuest } from '../../interfaces';
@@ -20,9 +21,8 @@ interface IInventoryCount {
 
 const Modal: React.FC<Props> = (props) => {
   const { type, quest, handleClose } = props;
+  const { googleId } = useAppContext();
   const [error, setError] = useState(false);
-  const [googleName, setGoogleName] = useState('');
-  const [googleId, setGoogleId] = useState('');
   const [currentTabIndex, setCurrentTabIndex] = useState(0);
   const [pokemonCount, setPokemonCount] = useState<
     Record<string, IInventoryCount>
@@ -31,10 +31,7 @@ const Modal: React.FC<Props> = (props) => {
   const router = useRouter();
 
   useEffect(() => {
-    const id = sessionStorage.getItem('googleId');
-    setGoogleId(id);
-    setGoogleName(sessionStorage.getItem('googleName'));
-    fetchInventoryCount(id);
+    fetchInventoryCount();
   }, []);
 
   const pokemon_list = useMemo(() => {
@@ -46,10 +43,10 @@ const Modal: React.FC<Props> = (props) => {
     setCurrentTabIndex(tabIndex);
   };
 
-  const fetchInventoryCount = async (trainer_id: string) => {
+  const fetchInventoryCount = async () => {
     await axios
       .post(`/api/pokemon/inventory/count`, {
-        trainer_id,
+        trainer_id: googleId,
         filter_pokemon: pokemon_list,
       })
       .then((response) => {
@@ -60,7 +57,7 @@ const Modal: React.FC<Props> = (props) => {
   };
 
   const afterSubmit = async () => {
-    await fetchInventoryCount(googleId);
+    await fetchInventoryCount();
     changeTab(0);
   };
 

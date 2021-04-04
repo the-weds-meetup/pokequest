@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
+import { useAppContext } from '../../context/state';
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 import SEO from '../../components/SEO';
 import SideNav from '../../components/SideNav';
@@ -26,8 +27,7 @@ const Content = styled.main`
 
 const Quests: React.FC = () => {
   const router = useRouter();
-  const [adminMode, setAdminMode] = useState(false);
-  const [googleId, setGoogleId] = useState('');
+  const { adminMode, googleId } = useAppContext();
   const [showModal, setShowModal] = useState(false);
   const [availableQuest, setAvailableQuest] = useState([]);
   const [selectedQuest, setSelectedQuest] = useState<IQuest | undefined>(
@@ -35,18 +35,14 @@ const Quests: React.FC = () => {
   );
 
   useEffect(() => {
-    const id = sessionStorage.getItem('googleId');
-    setAdminMode(sessionStorage.getItem('admin') === 'true');
-    setGoogleId(id);
-
     const getAvailableQuest = async () => {
       return await axios
-        .get(`/api/mission/available/${id}`)
+        .get(`/api/mission/available/${googleId}`)
         .then((response) => setAvailableQuest(response.data.available))
         .catch((error) => console.log(error));
     };
     getAvailableQuest();
-  }, [googleId]);
+  }, []);
 
   const getQuestInfo = (quest: IQuest) => {
     setSelectedQuest(quest);
@@ -78,11 +74,7 @@ const Quests: React.FC = () => {
           )}
 
           {showModal && (
-            <Modal
-              type="available"
-              quest={selectedQuest}
-              handleClose={closeModal}
-            />
+            <Modal quest={selectedQuest} handleClose={closeModal} />
           )}
         </Content>
       </DefaultLayout>

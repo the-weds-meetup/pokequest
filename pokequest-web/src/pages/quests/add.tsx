@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState, ChangeEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 
+import { useAppContext } from '../../context/state';
 import DefaultLayout from '../../components/layouts/DefaultLayout';
 import SEO from '../../components/SEO';
 import SideNav from '../../components/SideNav';
@@ -71,15 +72,13 @@ interface Props {
 const AddQuest: React.FC<Props> = (props) => {
   const { types, data } = props;
   const router = useRouter();
-  const [adminMode, setAdminMode] = useState(false);
+  const { adminMode } = useAppContext();
   const [pokemonSelect, setPokemonSelect] = useState(['']);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
   useEffect(() => {
-    const isAdmin = sessionStorage.getItem('admin') === 'true';
-    setAdminMode(isAdmin);
-    if (!isAdmin) {
+    if (!adminMode) {
       router.back();
     }
 
@@ -194,7 +193,7 @@ const AddQuest: React.FC<Props> = (props) => {
 };
 
 // Call these on server side
-export async function getStaticProps() {
+export const getStaticProps = async () => {
   try {
     const pokemon_list = await axios
       .get(process.env.MISSION_MANAGEMENT_ADMIN + '/pokemon')
@@ -214,6 +213,6 @@ export async function getStaticProps() {
       },
     };
   }
-}
+};
 
 export default AddQuest;

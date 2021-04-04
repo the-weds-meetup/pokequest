@@ -4,9 +4,12 @@ import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
 import LoginLayout from '../components/layouts/LoginLayout';
 import SEO from '../components/SEO';
 
+import { useAppContext } from '../context/state';
+
 // Show Login Screen
 const Login: React.FC = () => {
   const router = useRouter();
+  const { setGoogleId, setGoogleName } = useAppContext();
 
   const responseGoogle = (response: GoogleLoginResponse) => {
     console.log(response);
@@ -14,8 +17,8 @@ const Login: React.FC = () => {
 
   const handleGoogleSuccess = useCallback((response: GoogleLoginResponse) => {
     // store in sessions
-    sessionStorage.setItem('googleId', response.profileObj.googleId);
-    sessionStorage.setItem('googleName', response.profileObj.name);
+    setGoogleId(response.profileObj.googleId);
+    setGoogleName(response.profileObj.name);
 
     router.replace('/quests');
   }, []);

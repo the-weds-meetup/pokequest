@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
+import { useAppContext } from '../../context/state';
 import { ModalTitle, ModalTemplate, ModalBody } from './components';
 
 import { IQuest } from '../../interfaces';
@@ -35,14 +36,8 @@ const JoinButton = styled.div`
 const Modal: React.FC<Props> = (props) => {
   const { quest, handleClose } = props;
   const [error, setError] = useState(false);
-  const [googleName, setGoogleName] = useState('');
-  const [googleId, setGoogleId] = useState('');
+  const { googleName, googleId } = useAppContext();
   const router = useRouter();
-
-  useEffect(() => {
-    setGoogleId(sessionStorage.getItem('googleId'));
-    setGoogleName(sessionStorage.getItem('googleName'));
-  }, []);
 
   const joinQuest = async () => {
     setError(false);
