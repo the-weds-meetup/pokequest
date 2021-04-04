@@ -2,7 +2,7 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 
-import { getPokemon } from '../modules';
+import { getPokemon, publishMessage } from '../modules';
 
 dotenv.config();
 const MISSION_URL = `${process.env.MISSION_URL}`;
@@ -66,6 +66,10 @@ const addMission = async (_req: Request, _res: Response): Promise<void> => {
       })
     );
 
+    const success_pokemon_names = success_pokemon_list.map(
+      (pokemon) => pokemon.name
+    );
+
     // return results
     if (success_pokemon.length === poke_array.length) {
       _res.status(201).send({
@@ -75,6 +79,7 @@ const addMission = async (_req: Request, _res: Response): Promise<void> => {
           pokemon: success_pokemon_list,
         },
       });
+      publishMessage(mission_id, success_pokemon_names);
     } else if (
       success_pokemon.length > 0 &&
       success_pokemon.length < poke_array.length

@@ -6,6 +6,7 @@
   "author": "Amos <alphatrl1997@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "amqplib": "^0.7.1",
     "axios": "^0.21.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -17,6 +18,7 @@
     "@babel/core": "^7.13.10",
     "@babel/eslint-parser": "^7.13.10",
     "@babel/runtime": "^7.13.10",
+    "@types/amqplib": "^0.5.17",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.11",
     "@types/node": "^14.14.34",

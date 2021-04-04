@@ -5,10 +5,10 @@ dotenv.config();
 const POKEMON_URL = `${process.env.POKEMON_URL}`;
 
 interface Pokemon {
-  id?: number;
-  name?: string;
-  sprite?: string;
-  official_artwork?: string;
+  id: number;
+  name: string;
+  sprite: string;
+  official_artwork: string;
 }
 
 const getPokemon = async (poke_id: number): Promise<Pokemon> => {
