@@ -13,10 +13,14 @@ import QuestSection from '../../components/Quest/QuestSection';
 import { IQuest } from '../../interfaces';
 
 const Content = styled.main`
-  padding: 16px;
+  padding: 16px 36px;
   flex: 1;
   display: flex;
   flex-direction: column;
+
+  @media only screen and (max-device-width: 812px) {
+    padding: 16px;
+  }
 `;
 
 const Quests: React.FC = () => {
