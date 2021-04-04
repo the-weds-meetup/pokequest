@@ -30,8 +30,10 @@ const getCaughtPokemon = async (
   let isConnect = false;
 
   const query = {
-    text:
-      "SELECT * FROM trainer_pokemon WHERE trainer_id = $1 AND status = 'caught'",
+    text: `
+    SELECT * FROM trainer_pokemon 
+    WHERE trainer_id = $1 AND status = 'caught'
+    ORDER BY id ASC`,
     values: [trainer_id],
   };
   const client = new Client(connectionString);
