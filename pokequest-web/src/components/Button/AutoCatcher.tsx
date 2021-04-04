@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -6,7 +6,7 @@ import { useAppContext } from '../../context/state';
 import { IPokemon } from '../../interfaces';
 
 interface Props {
-  handleClick: (pokemon: IPokemon) => void;
+  handleClick: (pokemon: IPokemon[]) => void;
 }
 
 const Wrapper = styled.div`

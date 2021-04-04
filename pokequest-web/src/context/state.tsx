@@ -5,8 +5,8 @@ const AppContext = createContext({
   googleId: '',
   googleName: '',
   setAdminMode: () => undefined,
-  setGoogleId: (google_id: string) => unknown,
-  setGoogleName: (name: string) => unknown,
+  setGoogleId: (google_id: string) => undefined,
+  setGoogleName: (name: string) => undefined,
 });
 
 export const AppWrapper: React.FC = (props) => {

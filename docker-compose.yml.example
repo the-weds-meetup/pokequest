@@ -203,3 +203,24 @@ services:
       TRAINER_MISSION_POKEMON_URL: host.docker.internal:8005
     ports:
       - "9002:9002"
+
+  ###################################
+  # WEB: pokequest_web
+  ###################################
+  pokequest_web:
+    build:
+      context: ./pokequest-web
+      dockerfile: DOCKERFILE
+    image: <docker_id>/pokequest_web:pokequest
+    restart: always
+    depends_on: 
+      - complex_mission_management
+      - complex_mission_management_admin
+      - complex_pokemon_management
+    environment:
+      NEXT_PUBLIC_GOOGLE_CLIENT_ID:
+      MISSION_MANAGEMENT_ADMIN: http://host.docker.internal:9000
+      MISSION_MANAGEMENT: http://host.docker.internal:9001
+      POKEMON_MANAGEMENT: http://host.docker.internal:9002
+    ports:
+      - "3000:3000"

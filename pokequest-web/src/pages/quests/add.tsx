@@ -69,11 +69,11 @@ interface Props {
   data: IPokemon[];
 }
 
-const AddQuest: React.FC<Props> = (props) => {
-  const { types, data } = props;
+const AddQuest: React.FC<Props> = () => {
   const router = useRouter();
   const { adminMode } = useAppContext();
-  const [pokemonSelect, setPokemonSelect] = useState(['']);
+  const [pokemonSelect, setPokemonSelect] = useState<string[]>([]);
+  const [allPokemon, setAllPokemon] = useState<IPokemon[]>([]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -82,6 +82,14 @@ const AddQuest: React.FC<Props> = (props) => {
       router.back();
     }
 
+    const getAllPokemon = async () => {
+      await axios.get('/api/pokemon/all').then((response) => {
+        setAllPokemon(response.data.pokemon);
+      });
+    };
+
+    getAllPokemon();
+
     const todayDate = new Date();
     todayDate.setHours(0, 0, 0, 0);
     setStartDate(todayDate);
@@ -89,8 +97,6 @@ const AddQuest: React.FC<Props> = (props) => {
     const tomorrowDate = new Date();
     tomorrowDate.setDate(tomorrowDate.getDate() + 1);
     setEndDate(tomorrowDate);
-
-    setPokemonSelect([]);
   }, []);
 
   // handle when pokemon is clicked
@@ -181,7 +187,7 @@ const AddQuest: React.FC<Props> = (props) => {
           ) : (
             <p className="errorMsg">Select up to 3 Pokemon</p>
           )}
-          <PokemonGrid data={data} onChange={_onPokemonSelect} />
+          <PokemonGrid data={allPokemon} onChange={_onPokemonSelect} />
 
           <div className="break2" />
 
@@ -190,29 +196,6 @@ const AddQuest: React.FC<Props> = (props) => {
       </DefaultLayout>
     </>
   );
-};
-
-// Call these on server side
-export const getStaticProps = async () => {
-  try {
-    const pokemon_list = await axios
-      .get(process.env.MISSION_MANAGEMENT_ADMIN + '/pokemon')
-      .then((res) => res.data.pokemon);
-
-    return {
-      props: {
-        success: true,
-        data: pokemon_list,
-      },
-    };
-  } catch (error) {
-    return {
-      props: {
-        success: false,
-        data: error,
-      },
-    };
-  }
 };
 
 export default AddQuest;

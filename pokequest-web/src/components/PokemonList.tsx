@@ -37,7 +37,6 @@ interface Props {
 
 const PokemonList: React.FC<Props> = (props) => {
   const { data, onChange } = props;
-
   return (
     <PokeGrid>
       {data.map((pokemon) => (
