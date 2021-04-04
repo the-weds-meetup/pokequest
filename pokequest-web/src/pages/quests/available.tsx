@@ -26,7 +26,6 @@ const Content = styled.main`
 `;
 
 const Quests: React.FC = () => {
-  const router = useRouter();
   const { adminMode, googleId } = useAppContext();
   const [showModal, setShowModal] = useState(false);
   const [availableQuest, setAvailableQuest] = useState([]);

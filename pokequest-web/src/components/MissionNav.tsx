@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -42,20 +42,32 @@ const Line = styled.div`
   marign: 0 auto;
 `;
 
-const MissionNav: React.FC = (props) => {
+const MissionNav: React.FC = () => {
   const router = useRouter();
+
+  const activeStyle = useCallback(
+    (href: string) => {
+      return router.pathname !== href
+        ? undefined
+        : {
+            color: '#037bff',
+            textDecoration: 'underline',
+          };
+    },
+    [router]
+  );
 
   return (
     <Wrapper>
       <Link href="/quests" passHref>
         <StyledLink>
-          <div>Your Quests</div>
+          <div style={activeStyle('/quests')}>Your Quests</div>
         </StyledLink>
       </Link>
       <Line />
       <Link href="/quests/available" passHref>
         <StyledLink>
-          <div>Available Quests</div>
+          <div style={activeStyle('/quests/available')}>Available Quests</div>
         </StyledLink>
       </Link>
     </Wrapper>

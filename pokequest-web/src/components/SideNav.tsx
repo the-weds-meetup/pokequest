@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import { GoogleLogout } from 'react-google-login';
 import Link from 'next/link';
@@ -36,8 +36,7 @@ const StyledLink = styled.a`
   }
 `;
 
-const SideNav: React.FC = (props) => {
-  // const { href, name } = props;
+const SideNav: React.FC = () => {
   const router = useRouter();
   const [press, setPress] = useState(1);
   const { adminMode, setAdminMode } = useAppContext();
@@ -77,16 +76,30 @@ const SideNav: React.FC = (props) => {
 };
 
 const NavLinkInternals: React.FC = () => {
+  const router = useRouter();
+
+  const activeStyle = useCallback(
+    (href: string) => {
+      return router.pathname !== href
+        ? undefined
+        : {
+            backgroundColor: '#ffffff56',
+            color: '#037bff',
+          };
+    },
+    [router]
+  );
+
   return (
     <>
       <Link href="/quests" passHref>
         <StyledLink>
-          <div>Quests</div>
+          <div style={activeStyle('/quests')}>Quests</div>
         </StyledLink>
       </Link>
       <Link href="/pokemon" passHref>
         <StyledLink>
-          <div>Your Pokemon</div>
+          <div style={activeStyle('/pokemon')}>Your Pokemon</div>
         </StyledLink>
       </Link>
       <div style={{ paddingTop: 24 }} />
