@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import styled from 'styled-components';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 
 import { useAppContext } from '../../context/state';
 import { ModalTitle, ModalTemplate, ModalBody, ModalSend } from './components';
@@ -28,7 +26,6 @@ const Modal: React.FC<Props> = (props) => {
     Record<string, IInventoryCount>
   >({});
   const tabNames = ['Global Stats', 'Send Pokemon'];
-  const router = useRouter();
 
   useEffect(() => {
     fetchInventoryCount();
@@ -66,7 +63,7 @@ const Modal: React.FC<Props> = (props) => {
       <ModalTitle
         quest={quest}
         handleClose={handleClose}
-        tabNames={tabNames}
+        tabNames={type === 'now' ? tabNames : undefined}
         currentIndex={currentTabIndex}
         handleTabChange={changeTab}
       />
