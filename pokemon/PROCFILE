@@ -1,1 +1,2 @@
-web: yarn build && node dist/index.js
+release: yarn build
+web: node dist/index.js
