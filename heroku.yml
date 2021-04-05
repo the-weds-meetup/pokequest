@@ -1,0 +1,20 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+    - plan: cloudamqp:lemur
+      as: AMQP
+
+build:
+  docker:
+    pokemon: pokemon/DOCKERFILE
+    mission: mission/DOCKERFILE
+    mission_pokemon: mission_pokemon/DOCKERFILE
+    trainer_mission: trainer_mission/DOCKERFILE
+    trainer_pokemon: trainer_pokemon/DOCKERFILE
+    trainer_mission_pokemon: trainer_mission_pokemon/DOCKERFILE
+    complex_mission_management_admin: complex_mission_management_admin/DOCKERFILE
+    complex_mission_management: complex_mission_management/DOCKERFILE
+    complex_pokemon_management: complex_pokemon_management/DOCKERFILE
+    notification: notification/DOCKERFILE
+
