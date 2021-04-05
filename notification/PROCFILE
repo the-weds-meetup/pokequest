@@ -1,2 +1,1 @@
-release: pip install --no-cache-dir -r requirements.txt
 web: python ./notification.py
