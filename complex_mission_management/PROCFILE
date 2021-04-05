@@ -1,2 +1,2 @@
-release: yarn install && yarn build
-web: yarn start
+release: cd complex_mission_management && yarn install && yarn build
+web: cd complex_mission_management && yarn start
