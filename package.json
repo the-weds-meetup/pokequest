@@ -1,0 +1,20 @@
+{
+  "name": "pokequest",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.js",
+  "workspaces": {
+    "packages": [
+      "complex_mission_management",
+      "complex_mission_management_admin",
+      "complex_pokemon_management",
+      "mission",
+      "mission_pokemon",
+      "notification",
+      "pokemon",
+      "trainer_mission",
+      "trainer_mission_pokemon",
+      "trainer_pokemon"
+    ]
+  }
+}
