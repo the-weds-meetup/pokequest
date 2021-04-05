@@ -61,8 +61,6 @@ const Modal: React.FC<Props> = (props) => {
     changeTab(0);
   };
 
-  console.log(pokemonCount);
-
   return (
     <ModalTemplate>
       <ModalTitle

@@ -9,7 +9,7 @@ import { AppWrapper } from '../context/state';
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <AppWrapper>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </AppWrapper>
   );
 };

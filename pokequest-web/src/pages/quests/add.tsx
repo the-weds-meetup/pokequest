@@ -59,9 +59,16 @@ const DateWrapper = styled.div`
 `;
 
 const SubmitBtn = styled.button`
-  width: 200px;
-  height: 56px;
   margin: 0 auto;
+  padding: 16px 32px;
+  min-width: 300px;
+
+  background-color: #037bff;
+  border-radius: 4px;
+  border: #00000027 1px solid;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
 `;
 
 interface Props {

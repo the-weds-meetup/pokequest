@@ -1,9 +1,12 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { GoogleLogout } from 'react-google-login';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useAppContext } from '../context/state';
+import { mdiClose, mdiMenu } from '@mdi/js';
+import Icon from '@mdi/react';
+import { useMediaQuery } from 'react-responsive';
 
 const SideNavLink = styled.div`
   margin: 0;
@@ -13,12 +16,22 @@ const SideNavLink = styled.div`
   flex-direction: column;
   position: fixed;
   min-height: 100vh;
-  z-index: 10;
-
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  z-index: 10;
 
   h1 {
     padding: 0 12px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+    height: auto;
+    padding: 32px 12px;
+    min-height: auto;
+
+    h1 {
+      font-size: 2rem;
+    }
   }
 `;
 
@@ -36,10 +49,34 @@ const StyledLink = styled.a`
   }
 `;
 
+const OpenMenu = styled.button`
+  width: 50px;
+  background-color: #ffffff00;
+  border: none;
+  cursor: pointer;
+  top: 24px;
+  left: 12px;
+  position: fixed;
+  z-index: 10;
+`;
+
+const CloseWrapper = styled.button`
+  width: 50px;
+  background-color: #ffffff00;
+  border: none;
+  cursor: pointer;
+`;
+
 const SideNav: React.FC = () => {
   const router = useRouter();
   const [press, setPress] = useState(1);
-  const { adminMode, setAdminMode } = useAppContext();
+  const {
+    adminMode,
+    isSideOpen,
+    toggleSideBar,
+    setAdminMode,
+  } = useAppContext();
+  const isMobile = useMediaQuery({ query: '(max-width: 600px)' });
 
   const _handleLogout = () => {
     sessionStorage.clear();
@@ -63,8 +100,17 @@ const SideNav: React.FC = () => {
         };
   }, [adminMode]);
 
-  return (
+  return !isSideOpen && isMobile ? (
+    <OpenMenu onClick={toggleSideBar}>
+      <Icon path={mdiMenu} size={1.4} horizontal color="#00000087" />
+    </OpenMenu>
+  ) : (
     <SideNavLink style={adminStyles}>
+      {isMobile && (
+        <CloseWrapper onClick={toggleSideBar}>
+          <Icon path={mdiClose} size={1.4} horizontal color="#00000087" />
+        </CloseWrapper>
+      )}
       <h1 onClick={onAdminChange}>PokeQuest</h1>
       <NavLinkInternals />
       <GoogleLogout
@@ -80,7 +126,7 @@ const NavLinkInternals: React.FC = () => {
 
   const activeStyle = useCallback(
     (href: string) => {
-      return router.pathname !== href
+      return !router.pathname.includes(href)
         ? undefined
         : {
             backgroundColor: '#ffffff56',

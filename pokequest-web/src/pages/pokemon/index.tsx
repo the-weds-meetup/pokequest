@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
 import axios from 'axios';
 import Image from 'next/image';
 
@@ -12,7 +11,6 @@ import { AutoCatcher } from '../../components/Button';
 import Modal from '../../components/Modal/ModalPokemon';
 
 import { IPokemon } from '../../interfaces';
-import { fromPairs } from 'lodash';
 
 interface InventoryProps extends IPokemon {
   inventory_id: number;

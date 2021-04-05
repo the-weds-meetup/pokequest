@@ -13,8 +13,12 @@ const Wrapper = styled.div`
   top: 0;
   right: 0;
   flex: 1;
-
   position: absolute;
+
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+    left: 0;
+  }
 `;
 
 const DefaultLayout: React.FC = (props) => {

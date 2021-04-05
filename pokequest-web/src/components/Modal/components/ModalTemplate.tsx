@@ -22,6 +22,14 @@ const ModalWrapper = styled.div`
     padding: 32px;
     border-radius: 8px;
   }
+
+  @media only screen and (max-width: 600px) {
+    .modal-card {
+      width: 100vw;
+      height: 100vh;
+      overflow-y: auto;
+    }
+  }
 `;
 
 const Modal: React.FC = (props) => {

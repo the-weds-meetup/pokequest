@@ -32,6 +32,7 @@ const BodyWrapper = styled.div`
   padding: 24px 0;
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
 
   img {
     width: 120px;

@@ -32,6 +32,15 @@ const Wrapper = styled.div`
     color: white;
     cursor: pointer;
   }
+
+  @media only screen and (max-width: 600px) {
+    height: auto;
+    padding-top: 72px;
+
+    button {
+      height: 46px;
+    }
+  }
 `;
 
 const Button: React.FC<Props> = (props) => {

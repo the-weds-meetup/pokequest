@@ -12,10 +12,10 @@ import amqp_setup
 load_dotenv();
 
 # environment
-consumer_key = os.environ.get('CONSUMER_KEY')
-consumer_secret = os.environ.get('CONSUMER_SECRET')
-access_token = os.environ.get('ACCESS_TOKEN')
-access_token_secret = os.environ.get('ACCESS_TOKEN_SECRET')
+consumer_key = os.environ.get('CONSUMER_KEY') # twitter api key
+consumer_secret = os.environ.get('CONSUMER_SECRET') # twitter secret
+access_token = os.environ.get('ACCESS_TOKEN') # twitter bot account
+access_token_secret = os.environ.get('ACCESS_TOKEN_SECRET') # twitter bot secret
 
 
 monitorBindingKey='*.notification'
