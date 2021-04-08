@@ -2,7 +2,7 @@ import pika
 import os
 from dotenv import load_dotenv
 
-load_dotenv();
+load_dotenv()
 
 # These module-level variables are initialized whenever a new instance of python interpreter imports the module;
 # In each instance of python interpreter (i.e., a program run), the same module is only imported once (guaranteed by the interpreter).

@@ -9,7 +9,7 @@ import tweepy
 from dotenv import load_dotenv
 import amqp_setup
 
-load_dotenv();
+load_dotenv()
 
 # environment
 consumer_key = os.environ.get('CONSUMER_KEY') # twitter api key
