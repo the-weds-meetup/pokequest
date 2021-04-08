@@ -2,7 +2,6 @@ CREATE TABLE mission (
     id SERIAL PRIMARY KEY,
     start_time numeric NOT NULL,
     end_time numeric NOT NULL,
-    is_complete boolean NOT NULL DEFAULT false,
     creation_time numeric NOT NULL
 );
 

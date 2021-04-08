@@ -6,8 +6,6 @@ volumes:
 services:
   ###################################
   # DATABASE: The POSTGRES DB
-  # only for development
-  # remove in production
   ###################################
   postgres:
     build:
@@ -29,13 +27,33 @@ services:
   ###################################
   rabbitmq:
     image: rabbitmq:3-management
-    hostname: rabbitmq:pokequest
+    hostname: rabbitmq-pokequest
     restart: always
     ports:
       - "5672:5672"
       - "15672:15672"
     volumes: 
       - pokequest_data:/var/lib/rabbitmq
+
+  ###################################
+  # NOTIFICATION
+  ###################################
+  notification:
+    build:
+      context: ./notification
+      dockerfile: DOCKERFILE
+    image: <docker_id>/notification:pokequest
+    depends_on:
+      - rabbitmq
+      - web
+    restart: always
+    environment:
+      CONSUMER_KEY: <INSERT SOMETHING>
+      CONSUMER_SECRET: <INSERT SOMETHING>
+      ACCESS_TOKEN: <INSERT SOMETHING>
+      ACCESS_TOKEN_SECRET: <INSERT SOMETHING>
+      RABBIT_MQ_PORT: 5672
+      HOSTNAME: host.docker.internal
 
   ###################################
   # SERVICE: pokemon
@@ -124,7 +142,7 @@ services:
   ###################################
   # SERVICE: trainer_mission_pokemon
   ###################################
-    trainer_mission_pokemon:
+  trainer_mission_pokemon:
     build:
       context: ./trainer_mission_pokemon
       dockerfile: DOCKERFILE
@@ -156,12 +174,13 @@ services:
       - trainer_pokemon
       - trainer_mission_pokemon
     environment:
-      POKEMON_URL: host.docker.internal:8000
-      MISSION_URL: host.docker.internal:8001
-      MISSION_POKEMON_URL: host.docker.internal:8002
-      TRAINER_MISSION_URL: host.docker.internal:8003
-      TRAINER_POKEMON_URL: host.docker.internal:8004
-      TRAINER_MISSION_POKEMON_URL: host.docker.internal:8005
+      POKEMON_URL: http://host.docker.internal:8000
+      MISSION_URL: http://host.docker.internal:8001
+      MISSION_POKEMON_URL: http://host.docker.internal:8002
+      TRAINER_MISSION_URL: http://host.docker.internal:8003
+      TRAINER_POKEMON_URL: http://host.docker.internal:8004
+      TRAINER_MISSION_POKEMON_URL: http://host.docker.internal:8005
+      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
     ports:
       - "9000:9000"
 
@@ -182,12 +201,12 @@ services:
       - trainer_pokemon
       - trainer_mission_pokemon
     environment:
-      POKEMON_URL: host.docker.internal:8000
-      MISSION_URL: host.docker.internal:8001
-      MISSION_POKEMON_URL: host.docker.internal:8002
-      TRAINER_MISSION_URL: host.docker.internal:8003
-      TRAINER_POKEMON_URL: host.docker.internal:8004
-      TRAINER_MISSION_POKEMON_URL: host.docker.internal:8005
+      POKEMON_URL: http://host.docker.internal:8000
+      MISSION_URL: http://host.docker.internal:8001
+      MISSION_POKEMON_URL: http://host.docker.internal:8002
+      TRAINER_MISSION_URL: http://host.docker.internal:8003
+      TRAINER_POKEMON_URL: http://host.docker.internal:8004
+      TRAINER_MISSION_POKEMON_URL: http://host.docker.internal:8005
     ports:
       - "9001:9001"
   
@@ -208,19 +227,19 @@ services:
       - trainer_pokemon
       - trainer_mission_pokemon
     environment:
-      POKEMON_URL: host.docker.internal:8000
-      MISSION_URL: host.docker.internal:8001
-      MISSION_POKEMON_URL: host.docker.internal:8002
-      TRAINER_MISSION_URL: host.docker.internal:8003
-      TRAINER_POKEMON_URL: host.docker.internal:8004
-      TRAINER_MISSION_POKEMON_URL: host.docker.internal:8005
+      POKEMON_URL: http://host.docker.internal:8000
+      MISSION_URL: http://host.docker.internal:8001
+      MISSION_POKEMON_URL: http://host.docker.internal:8002
+      TRAINER_MISSION_URL: http://host.docker.internal:8003
+      TRAINER_POKEMON_URL: http://host.docker.internal:8004
+      TRAINER_MISSION_POKEMON_URL: http://host.docker.internal:8005
     ports:
       - "9002:9002"
 
   ###################################
   # WEB: pokequest_web
   ###################################
-  pokequest_web:
+  web:
     build:
       context: ./pokequest-web
       dockerfile: DOCKERFILE
@@ -231,7 +250,7 @@ services:
       - complex_mission_management_admin
       - complex_pokemon_management
     environment:
-      NEXT_PUBLIC_GOOGLE_CLIENT_ID:
+      NEXT_PUBLIC_GOOGLE_CLIENT_ID: <INSERT SOMETHING>
       MISSION_MANAGEMENT_ADMIN: http://host.docker.internal:9000
       MISSION_MANAGEMENT: http://host.docker.internal:9001
       POKEMON_MANAGEMENT: http://host.docker.internal:9002
