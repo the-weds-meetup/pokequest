@@ -34,25 +34,26 @@ const getMissionsOngoing = async (
   };
 
   const client = new Client(connectionString);
-  await client.connect();
 
-  await client
-    .query(query)
-    .then((results) => {
+  try {
+    await client.connect();
+
+    await client.query(query).then((results) => {
       _res.status(201).send({
         time: Date.now(),
         data: results.rows,
       });
-    })
-    .catch((error) => {
-      console.log('[MISSION]:', error);
-      _res.status(418).send({
-        time: Date.now(),
-        server: server_name,
-        data: error.message,
-      });
-    })
-    .finally(() => client.end());
+    });
+  } catch (error) {
+    console.log('[MISSION]:', error.message);
+    _res.status(418).send({
+      time: Date.now(),
+      server: server_name,
+      data: error.message,
+    });
+  } finally {
+    client.end();
+  }
 };
 
 export default getMissionsOngoing;

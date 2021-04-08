@@ -1,4 +1,8 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(404).send('No resources');
 };
+
+export default handler;

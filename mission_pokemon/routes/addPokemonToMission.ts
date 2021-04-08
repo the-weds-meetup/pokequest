@@ -50,7 +50,7 @@ const addPokemonToMission = async (
       });
     });
   } catch (error) {
-    console.log('[MISSION_POKEMON]:', error);
+    console.log('[MISSION_POKEMON]:', error.message);
     _res.status(418).send({
       date: Date.now(),
       server: server_name,

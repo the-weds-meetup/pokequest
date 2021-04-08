@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     try {
       const pokemon_list = await axios
@@ -13,8 +14,10 @@ export default async (req, res) => {
       });
       console.log('here is every pokemon');
     } catch (error) {
-      console.log(error);
-      res.status(418).send(error);
+      console.log('[WEB]: /pokemon/all', error.response.data);
+      res.status(418).send(error.response.data);
     }
   }
 };
+
+export default handler;

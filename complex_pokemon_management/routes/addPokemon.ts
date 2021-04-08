@@ -16,10 +16,12 @@ const TRAINER_POKEMON_URL = `${process.env.TRAINER_POKEMON_URL}`;
  */
 const addPokemon = async (_req: Request, _res: Response): Promise<void> => {
   const { trainer_id } = _req.body;
+  let isUserFault = false;
 
   try {
     // error handling
     if (!trainer_id) {
+      isUserFault = true;
       throw { msg: 'Missing Trainer ID' };
     }
 
@@ -39,17 +41,24 @@ const addPokemon = async (_req: Request, _res: Response): Promise<void> => {
     );
 
     _res.status(201).send({
-      date: Date.now(),
+      time: Date.now(),
       data: {
         pokemon: pokemonList,
       },
     });
   } catch (error) {
-    console.log('[ADD_POKEMON]', error);
-    _res.status(500).send({
-      date: Date.now(),
-      data: error,
-    });
+    console.log('[ADD_POKEMON]', error?.msg || error.response.data);
+    if (isUserFault) {
+      _res.status(500).send({
+        time: Date.now(),
+        server: 'complex_pokemon_management',
+        msg: error.msg,
+      });
+    } else {
+      _res.status(500).send({
+        ...error.response.data,
+      });
+    }
   }
 };
 

@@ -15,19 +15,19 @@ const addMission = async (_req: Request, _res: Response): Promise<void> => {
   try {
     if (!poke_array || poke_array.length === 0) {
       isServerFault = false;
-      throw { message: 'Missing Pokemon' };
+      throw { msg: 'Missing Pokemon' };
     }
     if (!start_time || !end_time) {
       isServerFault = false;
-      throw { message: 'Missing timings' };
+      throw { msg: 'Missing timings' };
     }
     if (start_time < 0 || end_time < 0) {
       isServerFault = false;
-      throw { message: 'Missing timings' };
+      throw { msg: 'Missing timings' };
     }
     if (start_time >= end_time) {
       isServerFault = false;
-      throw { message: 'Incorrect timings' };
+      throw { msg: 'Incorrect timings' };
     }
 
     // add all the pokemon into the mission
@@ -92,23 +92,20 @@ const addMission = async (_req: Request, _res: Response): Promise<void> => {
         },
       });
     } else {
-      _res.status(500).send({
-        time: Date.now(),
-        data: {
-          msg: 'Did not add Pokemon',
-        },
-      });
+      throw { msg: 'Did not add Pokemon' };
     }
   } catch (error) {
     if (isServerFault) {
-      console.log(error.response);
+      console.log('MISSION_MANAGEMENT_ADMIN', error.response.data);
       _res.status(500).send({
-        data: error.response.data,
+        ...error.response.data,
       });
     } else {
-      console.log(error);
+      console.log('MISSION_MANAGEMENT_ADMIN', error.msg);
       _res.status(500).send({
-        data: error.message,
+        time: Date.now(),
+        server: 'complex_mission_management_admin',
+        msg: error.msg,
       });
     }
   }

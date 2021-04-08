@@ -60,10 +60,9 @@ const getMissionsNow = async (_req: Request, _res: Response): Promise<void> => {
       data: ongoing,
     });
   } catch (error) {
-    console.log('[COMPLES MISSION VIEW]', error);
+    console.log('[COMPLEX MISSION VIEW NOW]', error.response.data);
     _res.status(500).send({
-      date: Date.now(),
-      data: error,
+      ...error.response.data,
     });
   }
 };

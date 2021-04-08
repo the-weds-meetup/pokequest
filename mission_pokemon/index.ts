@@ -11,9 +11,9 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send('Mission Pokemons Microservice'));
 
-app.post('/addPokemon', addPokemonToMission);
+app.post('/add', addPokemonToMission);
 
-app.get('/getPokemon', getMissionPokemon);
+app.get('/get', getMissionPokemon);
 
 app.listen(PORT, async () => {
   console.log(

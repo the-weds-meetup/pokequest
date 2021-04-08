@@ -18,7 +18,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send('Missions Microservice'));
 
-app.get('/mission', getAllMissions);
+// app.get('/mission', getAllMissions);
 
 app.post('/mission', addMission);
 
@@ -26,7 +26,7 @@ app.get('/mission/ongoing', getMissionsOngoing);
 
 app.get('/mission/complete', getMissionsCompleted);
 
-app.get('/mission/:mission_id', getMissionInformation);
+// app.get('/mission/:mission_id', getMissionInformation);
 
 app.listen(PORT, async () => {
   console.log(

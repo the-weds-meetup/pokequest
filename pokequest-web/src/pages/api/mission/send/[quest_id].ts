@@ -1,12 +1,11 @@
 import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const { quest_id } = req.query;
     const { trainer_id, pokemon_list } = req.body;
-
-    console.log(req.body);
 
     try {
       await axios.post(
@@ -17,10 +16,12 @@ export default async (req, res) => {
         }
       );
       res.status(201).send('OK');
-      console.log('send');
+      console.log('[WEB: mission/send/:quest_id]: send');
     } catch (error) {
-      console.log(error);
-      res.status(418).send(error);
+      console.log('[WEB: mission/send/:quest_id]', error.response.data);
+      res.status(418).send(error.response.data);
     }
   }
 };
+
+export default handler;

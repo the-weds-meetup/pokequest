@@ -28,10 +28,10 @@ const returnMultipleRandomPokemon = (
       data: pokemonList,
     });
   } else {
-    _res.status(400).send({
+    _res.status(418).send({
       time: Date.now(),
       server: 'pokemon',
-      msg: 'Invalid ID',
+      msg: 'Invalid size',
     });
   }
 };

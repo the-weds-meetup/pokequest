@@ -13,12 +13,14 @@ const TRAINER_POKEMON_URL = `${process.env.TRAINER_POKEMON_URL}`;
  * Get all pokemon in the inventory which has the status 'caught'
  * Returns the mission information
  */
-const addPokemon = async (_req: Request, _res: Response): Promise<void> => {
+const viewPokemon = async (_req: Request, _res: Response): Promise<void> => {
   const { trainer_id } = _req.body;
+  let isUserFault = false;
 
   try {
     // error handling
     if (!trainer_id) {
+      isUserFault = true;
       throw { msg: 'Missing Trainer ID' };
     }
 
@@ -53,18 +55,25 @@ const addPokemon = async (_req: Request, _res: Response): Promise<void> => {
     );
 
     _res.status(201).send({
-      date: Date.now(),
+      time: Date.now(),
       data: {
         pokemon: pokemonCaught,
       },
     });
   } catch (error) {
     console.log('[ADD_POKEMON]', error);
-    _res.status(500).send({
-      date: Date.now(),
-      data: error,
-    });
+    if (isUserFault) {
+      _res.status(500).send({
+        time: Date.now(),
+        server: 'complex_pokemon_management',
+        msg: error.msg,
+      });
+    } else {
+      _res.status(500).send({
+        ...error.data,
+      });
+    }
   }
 };
 
-export default addPokemon;
+export default viewPokemon;

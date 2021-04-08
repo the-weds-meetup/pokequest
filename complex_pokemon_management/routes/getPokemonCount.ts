@@ -21,10 +21,12 @@ const groupInventoryById = async (
   _res: Response
 ): Promise<void> => {
   const { trainer_id, filter_pokemon } = _req.body;
+  let isUserFault = false;
 
   try {
     // error handling
     if (!trainer_id) {
+      isUserFault = true;
       throw { msg: 'Missing Trainer ID' };
     }
 
@@ -53,10 +55,17 @@ const groupInventoryById = async (
     });
   } catch (error) {
     console.log('[ADD_POKEMON]', error);
-    _res.status(500).send({
-      date: Date.now(),
-      data: error,
-    });
+    if (isUserFault) {
+      _res.status(500).send({
+        time: Date.now(),
+        server: 'complex_pokemon_management',
+        msg: error.msg,
+      });
+    } else {
+      _res.status(500).send({
+        ...error.data,
+      });
+    }
   }
 };
 

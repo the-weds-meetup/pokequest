@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const { poke_array, start_time, end_time } = req.body;
 
@@ -16,11 +17,13 @@ export default async (req, res) => {
         process.env.MISSION_MANAGEMENT_ADMIN + '/mission/add',
         payload
       );
-      console.log('created');
       res.status(201).send('OK');
+      console.log('[WEB: mission/add/]: created');
     } catch (error) {
-      console.log(error);
-      res.status(418).send(error);
+      console.log('[WEB: mission/add/]', error.response.data);
+      res.status(418).send(error.response.data);
     }
   }
 };
+
+export default handler;

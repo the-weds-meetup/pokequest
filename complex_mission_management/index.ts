@@ -4,7 +4,7 @@ import express from 'express';
 
 import {
   acceptMission,
-  getMissionInformation,
+  // getMissionInformation,
   getMissionPokemonCount,
   getMissionsAvailable,
   getMissionsComplete,

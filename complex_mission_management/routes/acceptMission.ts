@@ -17,12 +17,15 @@ const acceptMission = async (_req: Request, _res: Response): Promise<void> => {
   // link mission to user_id
   const { mission_id } = _req.params;
   const { trainer_id, trainer_name } = _req.body;
+  let isUserFault = false;
 
   try {
     // error handling
     if (!trainer_id) {
+      isUserFault = true;
       throw { msg: 'Missing Trainer ID' };
     } else if (!trainer_name) {
+      isUserFault = true;
       throw { msg: 'Missing Trainer Name' };
     }
 
@@ -45,15 +48,23 @@ const acceptMission = async (_req: Request, _res: Response): Promise<void> => {
       .then((response) => response.data.data);
 
     _res.status(201).send({
-      date: Date.now(),
+      time: Date.now(),
       data: 'Created',
     });
   } catch (error) {
-    console.log('[COMPLEX MISSION JOIN]', error);
-    _res.status(500).send({
-      date: Date.now(),
-      data: error.response.data,
-    });
+    if (isUserFault) {
+      console.log('[COMPLEX MISSION ACCEPT]', error.msg);
+      _res.status(500).send({
+        time: Date.now(),
+        server: 'complex_mission_management',
+        msg: error.msg,
+      });
+    } else {
+      console.log('[COMPLEX MISSION ACCEPT]', error.response.data);
+      _res.status(500).send({
+        ...error.response.data,
+      });
+    }
   }
 };
 

@@ -22,7 +22,7 @@ const returnAvailablePokemon = (
     });
   } catch (error) {
     console.log('[POKEMON]:', error);
-    _res.status(500).send({
+    _res.status(418).send({
       time: Date.now(),
       server: 'pokemon',
       msg: error.message,

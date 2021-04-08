@@ -34,10 +34,6 @@ const getMissionPokemon = async (
   const client = new Client(connectionString);
   let isConnect = false;
 
-  if (!mission_id) {
-    _res.status(401).send('Missing variables');
-  }
-
   try {
     if (!mission_id) {
       throw { message: 'Missing Variables' };
@@ -54,7 +50,7 @@ const getMissionPokemon = async (
       });
     });
   } catch (error) {
-    console.log('[MISSION_POKEMON]:', error);
+    console.log('[MISSION_POKEMON]:', error.message);
     _res.status(418).send({
       date: Date.now(),
       server: server_name,

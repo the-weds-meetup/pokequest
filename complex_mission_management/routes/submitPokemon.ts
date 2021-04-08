@@ -21,12 +21,15 @@ const submitPokemon = async (_req: Request, _res: Response): Promise<void> => {
   const { pokemon_list, trainer_id } = _req.body;
   // pokemon_list: {pokemon_id: count}
   const type = 'mission';
+  let isUserFault = false;
 
   try {
     // ensure the variables exists
     if (!trainer_id) {
+      isUserFault = true;
       throw { msg: 'Missing Trainer ID' };
     } else if (Object.keys(pokemon_list).length === 0) {
+      isUserFault = true;
       throw { msg: 'Pokemon List empty' };
     }
 
@@ -74,15 +77,22 @@ const submitPokemon = async (_req: Request, _res: Response): Promise<void> => {
     );
 
     _res.status(201).send({
-      date: Date.now(),
+      time: Date.now(),
       data: 'Updated',
     });
   } catch (error) {
     console.log('[MISSION_MANANGEMENT]', error);
-    _res.status(500).send({
-      date: Date.now(),
-      data: error.response.data,
-    });
+    if (isUserFault) {
+      _res.status(500).send({
+        time: Date.now(),
+        server: 'complex_mission_management',
+        msg: error.data,
+      });
+    } else {
+      _res.status(500).send({
+        ...error.data,
+      });
+    }
   }
 };
 
