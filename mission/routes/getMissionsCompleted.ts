@@ -48,7 +48,7 @@ const getMissionsCompleted = async (
     _res.status(418).send({
       time: Date.now(),
       server: server_name,
-      data: error.message,
+      msg: error.message,
     });
   } finally {
     client.end();

@@ -26,7 +26,7 @@ app.get('/mission/ongoing', getMissionsOngoing);
 
 app.get('/mission/complete', getMissionsCompleted);
 
-// app.get('/mission/:mission_id', getMissionInformation);
+app.get('/mission/:mission_id', getMissionInformation);
 
 app.listen(PORT, async () => {
   console.log(

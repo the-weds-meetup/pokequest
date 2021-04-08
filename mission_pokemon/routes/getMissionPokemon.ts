@@ -52,9 +52,9 @@ const getMissionPokemon = async (
   } catch (error) {
     console.log('[MISSION_POKEMON]:', error.message);
     _res.status(418).send({
-      date: Date.now(),
+      time: Date.now(),
       server: server_name,
-      data: error.message,
+      msg: error.message,
     });
   } finally {
     // disconnect client if connected
