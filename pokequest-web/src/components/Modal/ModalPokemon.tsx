@@ -36,6 +36,7 @@ const BodyWrapper = styled.div`
 
   img {
     width: 120px;
+    height: 120px;
   }
 `;
 
