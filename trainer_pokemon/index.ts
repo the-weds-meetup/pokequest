@@ -17,11 +17,11 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send('Trainer Pokemons Microservice'));
 
-app.get('/inventory/info/trainer/:trainer_id', getAllPokemon);
-app.get('/inventory/info/id/:inventory_id', getCaughtPokemonById);
+app.get('/inventory/trainer/:trainer_id', getAllPokemon);
+app.get('/inventory/id/:inventory_id', getCaughtPokemonById);
 app.get('/inventory/caught/:trainer_id', getCaughtPokemon);
 app.post('/inventory/add/:trainer_id/:pokemon_id', addPokemon);
-app.post('/inventory/update/:pokemon_id', updatePokemonStatus);
+app.post('/inventory/update/:inventory_id', updatePokemonStatus);
 
 app.listen(PORT, async () => {
   console.log(

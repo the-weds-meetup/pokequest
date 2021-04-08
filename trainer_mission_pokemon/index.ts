@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.get('/', (req, res) => res.send('Trainer Pokemons Microservice'));
 
-app.post('/transfer/:mission_id/:pokemon_id', submitPokemon);
+app.post('/transfer/:mission_id/:inventory_id', submitPokemon);
 
 // useful to get a count of overall pokemon from a mission
 app.get('/transfer/:mission_id', showTransferredPokemon);

@@ -22,12 +22,12 @@ const connectionString = isProduction
     };
 
 const submitPokemon = async (_req: Request, _res: Response): Promise<void> => {
-  const { mission_id, pokemon_id } = _req.params;
+  const { mission_id, inventory_id } = _req.params;
 
   const query = {
     text:
       'INSERT INTO mission_trainer_pokemon(mission_id, trainer_pokemon_id, received_time) VALUES($1, $2, $3)',
-    values: [mission_id, pokemon_id, Date.now()],
+    values: [mission_id, inventory_id, Date.now()],
   };
 
   const client = new Client(connectionString);

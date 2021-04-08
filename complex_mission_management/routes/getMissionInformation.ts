@@ -17,7 +17,7 @@ const getMissionInformation = async (
   try {
     // get the poke_id from mission_pokemon
     const pokemon_id_list = await axios
-      .get(MISSION_POKEMON_URL + '/getPokemon', {
+      .get(MISSION_POKEMON_URL + '/get', {
         data: {
           mission_id: mission_id,
         },
@@ -50,8 +50,9 @@ const getMissionInformation = async (
       },
     });
   } catch (error) {
+    console.log('[COMPLEX MISSION VIEW Information]', error.response.data);
     _res.status(500).send({
-      msg: error.response.data,
+      ...error.response.data,
     });
   }
 };

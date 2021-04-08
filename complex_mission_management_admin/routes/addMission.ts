@@ -47,7 +47,7 @@ const addMission = async (_req: Request, _res: Response): Promise<void> => {
     // add inside array
     for await (const poke_id of poke_array) {
       await axios
-        .post(MISSION_POKEMON_URL + '/addPokemon', {
+        .post(MISSION_POKEMON_URL + '/add', {
           poke_id: poke_id,
           mission_id: mission_id,
         })

@@ -26,13 +26,13 @@ const updatePokemonStatus = async (
   _req: Request,
   _res: Response
 ): Promise<void> => {
-  const { pokemon_id } = _req.params;
+  const { inventory_id } = _req.params;
   const { update_type } = _req.body;
   let isConnect = false;
 
   const query = {
     text: 'UPDATE trainer_pokemon SET status = $1 WHERE id = $2',
-    values: [update_type, pokemon_id],
+    values: [update_type, inventory_id],
   };
   const client = new Client(connectionString);
 

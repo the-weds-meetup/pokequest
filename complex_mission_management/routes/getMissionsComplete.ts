@@ -1,6 +1,6 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { Request, Response } from 'express';
+import { Request, Response, response } from 'express';
 
 import { getMissionPokemon, getPokemon } from '../modules';
 
@@ -19,13 +19,13 @@ const getMissionsComplete = async (
   _req: Request,
   _res: Response
 ): Promise<void> => {
-  const { user_id } = _req.params;
+  const { trainer_id } = _req.params;
 
   // get all the ongoing missions
   try {
     // return only the id of the missions by the user
     const trainerMissionList: number[] = await axios
-      .get(TRAINER_MISSION_URL + `/quest/trainer/${user_id}`)
+      .get(TRAINER_MISSION_URL + `/quest/trainer/${trainer_id}`)
       .then((response) => {
         return response.data.data.map((mission) => mission.mission_id);
       });
@@ -59,10 +59,9 @@ const getMissionsComplete = async (
       data: ongoing,
     });
   } catch (error) {
-    console.log('[COMPLES MISSION VIEW]', error);
+    console.log('[COMPLEX MISSION VIEW COMPLETE]', error.response.data);
     _res.status(500).send({
-      date: Date.now(),
-      data: error,
+      ...error.response.data,
     });
   }
 };

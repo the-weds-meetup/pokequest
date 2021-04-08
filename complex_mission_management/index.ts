@@ -50,25 +50,25 @@ app.use(cors());
 app.get('/', (req, res) => res.send('MISSION_MANAGEMENT Microservice'));
 
 // get all mission available, not subscribed by the user: array
-app.get('/mission/available/:user_id', getMissionsAvailable);
+app.get('/mission/available/:trainer_id', getMissionsAvailable);
 
 // sign up for a mission
 app.post('/mission/signup/:mission_id/', acceptMission);
 
 // get a mission's pokemons
-app.get('/mission/info/pokemon/:mission_id', getMissionInformation);
+// app.get('/mission/info/pokemon/:mission_id', getMissionInformation);
 
 // get a mission's submitted pokemon count
 app.get('/mission/info/count/:mission_id', getMissionPokemonCount);
 
 // get currently subscribed missions happening now: array
-app.get('/mission/now/:user_id', getMissionsNow);
+app.get('/mission/now/:trainer_id', getMissionsNow);
 
 // get currently subscribed missions happening in the future: array
-app.get('/mission/soon/:user_id', getMissionsFuture);
+app.get('/mission/soon/:trainer_id', getMissionsFuture);
 
 // get completed missions: array
-app.get('/mission/complete/:user_id', getMissionsComplete);
+app.get('/mission/complete/:trainer_id', getMissionsComplete);
 
 // submit pokemon to mission
 app.post('/mission/submit/:mission_id', submitPokemon);

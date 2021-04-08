@@ -19,14 +19,14 @@ const getMissionsFuture = async (
   _req: Request,
   _res: Response
 ): Promise<void> => {
-  const { user_id } = _req.params;
+  const { trainer_id } = _req.params;
   const date = Date.now();
 
   // get all the ongoing missions
   try {
     // return only the id of the missions by the user
     const trainerMissionList: number[] = await axios
-      .get(TRAINER_MISSION_URL + `/quest/trainer/${user_id}`)
+      .get(TRAINER_MISSION_URL + `/quest/trainer/${trainer_id}`)
       .then((response) => {
         return response.data.data.map((mission) => mission.mission_id);
       });
@@ -59,14 +59,13 @@ const getMissionsFuture = async (
     );
 
     _res.status(201).send({
-      date: date,
+      time: date,
       data: ongoing,
     });
   } catch (error) {
-    console.log('[COMPLES MISSION VIEW]', error);
+    console.log('[COMPLEX MISSION VIEW FUTURE]', error.response.data);
     _res.status(500).send({
-      date: Date.now(),
-      data: error,
+      ...error.response.data,
     });
   }
 };

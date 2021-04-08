@@ -23,7 +23,7 @@ const getPokemonCount = async (
       .then((response) => response.data.data);
 
     const mission_pokemon = await axios
-      .get(MISSION_POKEMON_URL + '/getPokemon', {
+      .get(MISSION_POKEMON_URL + '/get', {
         data: {
           mission_id: mission_id,
         },
@@ -38,7 +38,7 @@ const getPokemonCount = async (
         pokemon_inventory_id.map(async (inventory) => {
           const inventory_id = inventory.trainer_pokemon_id;
           return await axios
-            .get(TRAINER_POKEMON_URL + `/inventory/info/id/${inventory_id}`)
+            .get(TRAINER_POKEMON_URL + `/inventory/id/${inventory_id}`)
             .then((response) => response.data.data);
         })
       )
@@ -62,15 +62,14 @@ const getPokemonCount = async (
       })
     ).then(() => {
       _res.status(201).send({
-        date: Date.now(),
+        time: Date.now(),
         data: inventory_count,
       });
     });
   } catch (error) {
-    console.log('[COMPLEX MISSION VIEW]', error);
+    console.log('[COMPLEX MISSION VIEW COUNT]', error.response.data);
     _res.status(500).send({
-      date: Date.now(),
-      data: error,
+      ...error.response.data,
     });
   }
 };

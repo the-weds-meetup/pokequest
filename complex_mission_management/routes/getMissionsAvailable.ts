@@ -19,13 +19,13 @@ const getMissionsAvailable = async (
   _req: Request,
   _res: Response
 ): Promise<void> => {
-  const { user_id } = _req.params;
+  const { trainer_id } = _req.params;
 
   // get all the ongoing missions
   try {
     // return only the id of the missions by the user
     const trainerMissionList: number[] = await axios
-      .get(TRAINER_MISSION_URL + `/quest/trainer/${user_id}`)
+      .get(TRAINER_MISSION_URL + `/quest/trainer/${trainer_id}`)
       .then((response) => {
         return response.data.data.map((mission) => mission.mission_id);
       });
@@ -56,14 +56,13 @@ const getMissionsAvailable = async (
     );
 
     _res.status(201).send({
-      date: Date.now(),
+      time: Date.now(),
       data: ongoing,
     });
   } catch (error) {
-    console.log('[COMPLEX MISSION VIEW]', error);
+    console.log('[COMPLEX MISSION VIEW AVAILABLE]', error.response.data);
     _res.status(500).send({
-      date: Date.now(),
-      data: error,
+      ...error.response.data,
     });
   }
 };
