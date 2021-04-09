@@ -1,8 +1,9 @@
 # ignore node
 node_modules
 
-# all .example
+# all .env
 *.example
+*.local
 
-.next
+.next/
 /build

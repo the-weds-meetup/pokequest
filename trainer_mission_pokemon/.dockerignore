@@ -1,5 +1,6 @@
 # ignore node
 node_modules
 
-# all .example
+# all types of env
 *.example
+*.env
