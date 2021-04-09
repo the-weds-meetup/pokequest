@@ -14,8 +14,8 @@ services:
     image: <docker_id>/postgres:pokequest
     restart: always
     environment: 
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
     ports:
       - "5432:5432"
     volumes:
@@ -48,12 +48,12 @@ services:
       - web
     restart: always
     environment:
-      CONSUMER_KEY: <INSERT SOMETHING>
-      CONSUMER_SECRET: <INSERT SOMETHING>
-      ACCESS_TOKEN: <INSERT SOMETHING>
-      ACCESS_TOKEN_SECRET: <INSERT SOMETHING>
-      RABBIT_MQ_PORT: 5672
-      HOSTNAME: host.docker.internal
+      - "CONSUMER_KEY=<INSERT_KEY>"
+      - "CONSUMER_SECRET=<INSERT_KEY>"
+      - "ACCESS_TOKEN=<INSERT_KEY>"
+      - "ACCESS_TOKEN_SECRET=<INSERT_KEY>"
+      - "RABBIT_MQ_PORT=5672"
+      - "HOSTNAME=rabbitmq"
 
   ###################################
   # SERVICE: pokemon
@@ -77,11 +77,11 @@ services:
     image: <docker_id>/mission:pokequest
     restart: always
     environment:
-      DATABASE_USER: postgres
-      DATABASE_URL: host.docker.internal
-      DATABASE_NAME: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_PORT: 5432
+      - "DATABASE_USER=postgres"
+      - "DATABASE_HOST=postgres"
+      - "DATABASE_NAME=postgres"
+      - "DATABASE_PASSWORD=postgres"
+      - "DATABASE_PORT=5432"
     ports:
       - "8001:8001"
 
@@ -95,11 +95,11 @@ services:
     image: <docker_id>/mission_pokemon:pokequest
     restart: always
     environment:
-      DATABASE_USER: postgres
-      DATABASE_URL: host.docker.internal
-      DATABASE_NAME: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_PORT: 5432
+      - 'DATABASE_USER=postgres'
+      - 'DATABASE_HOST=postgres'
+      - 'DATABASE_NAME=postgres'
+      - 'DATABASE_PASSWORD=postgres'
+      - 'DATABASE_PORT=5432'
     ports:
       - "8002:8002"
 
@@ -113,11 +113,11 @@ services:
     image: <docker_id>/trainer_mission:pokequest
     restart: always
     environment:
-      DATABASE_USER: postgres
-      DATABASE_URL: host.docker.internal
-      DATABASE_NAME: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_PORT: 5432
+      - "DATABASE_USER=postgres"
+      - "DATABASE_HOST=postgres"
+      - "DATABASE_NAME=postgres"
+      - "DATABASE_PASSWORD=postgres"
+      - "DATABASE_PORT=5432"
     ports:
       - "8003:8003"
 
@@ -131,11 +131,11 @@ services:
     image: <docker_id>/trainer_pokemon:pokequest
     restart: always
     environment:
-      DATABASE_USER: postgres
-      DATABASE_URL: host.docker.internal
-      DATABASE_NAME: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_PORT: 5432
+      - "DATABASE_USER=postgres"
+      - "DATABASE_HOST=postgres"
+      - "DATABASE_NAME=postgres"
+      - "DATABASE_PASSWORD=postgres"
+      - "DATABASE_PORT=5432"
     ports:
       - "8004:8004"
 
@@ -149,11 +149,11 @@ services:
     image: <docker_id>/trainer_mission_pokemon:pokequest
     restart: always
     environment:
-      DATABASE_USER: postgres
-      DATABASE_URL: host.docker.internal
-      DATABASE_NAME: postgres
-      DATABASE_PASSWORD: postgres
-      DATABASE_PORT: 5432
+      - "DATABASE_USER=postgres"
+      - "DATABASE_HOST=postgres"
+      - "DATABASE_NAME=postgres"
+      - "DATABASE_PASSWORD=postgres"
+      - "DATABASE_PORT=5432"
     ports:
       - "8005:8005"
 
@@ -174,13 +174,13 @@ services:
       - trainer_pokemon
       - trainer_mission_pokemon
     environment:
-      POKEMON_URL: http://host.docker.internal:8000
-      MISSION_URL: http://host.docker.internal:8001
-      MISSION_POKEMON_URL: http://host.docker.internal:8002
-      TRAINER_MISSION_URL: http://host.docker.internal:8003
-      TRAINER_POKEMON_URL: http://host.docker.internal:8004
-      TRAINER_MISSION_POKEMON_URL: http://host.docker.internal:8005
-      RABBITMQ_URL: amqp://guest:guest@rabbitmq:5672
+      - "POKEMON_URL=http://pokemon:8000"
+      - "MISSION_URL=http://mission:8001"
+      - "MISSION_POKEMON_URL=http://mission_pokemon:8002"
+      - "TRAINER_MISSION_URL=http://trainer_mission:8003"
+      - "TRAINER_POKEMON_URL=http://trainer_pokemon:8004"
+      - "TRAINER_MISSION_POKEMON_URL=http://trainer_mission_pokemon:8005"
+      - "RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672"
     ports:
       - "9000:9000"
 
@@ -201,12 +201,12 @@ services:
       - trainer_pokemon
       - trainer_mission_pokemon
     environment:
-      POKEMON_URL: http://host.docker.internal:8000
-      MISSION_URL: http://host.docker.internal:8001
-      MISSION_POKEMON_URL: http://host.docker.internal:8002
-      TRAINER_MISSION_URL: http://host.docker.internal:8003
-      TRAINER_POKEMON_URL: http://host.docker.internal:8004
-      TRAINER_MISSION_POKEMON_URL: http://host.docker.internal:8005
+      - "POKEMON_URL=http://pokemon:8000"
+      - "MISSION_URL=http://mission:8001"
+      - "MISSION_POKEMON_URL=http://mission_pokemon:8002"
+      - "TRAINER_MISSION_URL=http://trainer_mission:8003"
+      - "TRAINER_POKEMON_URL=http://trainer_pokemon:8004"
+      - "TRAINER_MISSION_POKEMON_URL=http://trainer_mission_pokemon:8005"
     ports:
       - "9001:9001"
   
@@ -227,12 +227,12 @@ services:
       - trainer_pokemon
       - trainer_mission_pokemon
     environment:
-      POKEMON_URL: http://host.docker.internal:8000
-      MISSION_URL: http://host.docker.internal:8001
-      MISSION_POKEMON_URL: http://host.docker.internal:8002
-      TRAINER_MISSION_URL: http://host.docker.internal:8003
-      TRAINER_POKEMON_URL: http://host.docker.internal:8004
-      TRAINER_MISSION_POKEMON_URL: http://host.docker.internal:8005
+      - "POKEMON_URL=http://pokemon:8000"
+      - "MISSION_URL=http://mission:8001"
+      - "MISSION_POKEMON_URL=http://mission_pokemon:8002"
+      - "TRAINER_MISSION_URL=http://trainer_mission:8003"
+      - "TRAINER_POKEMON_URL=http://trainer_pokemon:8004"
+      - "TRAINER_MISSION_POKEMON_URL=http://trainer_mission_pokemon:8005"
     ports:
       - "9002:9002"
 
@@ -250,9 +250,9 @@ services:
       - complex_mission_management_admin
       - complex_pokemon_management
     environment:
-      NEXT_PUBLIC_GOOGLE_CLIENT_ID: <INSERT SOMETHING>
-      MISSION_MANAGEMENT_ADMIN: http://host.docker.internal:9000
-      MISSION_MANAGEMENT: http://host.docker.internal:9001
-      POKEMON_MANAGEMENT: http://host.docker.internal:9002
+      - "GOOGLE_CLIENT_ID=<INSERT_KEY>"
+      - "MISSION_MANAGEMENT_ADMIN=http://complex_mission_management_admin:9000"
+      - "MISSION_MANAGEMENT=http://complex_mission_management:9001"
+      - "POKEMON_MANAGEMENT=http://complex_pokemon_management:9002"
     ports:
       - "3000:3000"

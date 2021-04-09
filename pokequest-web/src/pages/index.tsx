@@ -88,7 +88,7 @@ const Login: React.FC = () => {
           </div>
 
           <GoogleLogin
-            clientId={`${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}`}
+            clientId={process.env.GOOGLE_CLIENT_ID}
             buttonText="Login with Google"
             onSuccess={handleGoogleSuccess}
             onFailure={responseGoogle}
