@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 volumes:
   pokequest_data:
@@ -96,7 +96,7 @@ services:
     restart: always
     environment:
       - 'DATABASE_USER=postgres'
-      - 'DATABASE_HOST=postgres'
+      - "DATABASE_HOST=postgres"
       - 'DATABASE_NAME=postgres'
       - 'DATABASE_PASSWORD=postgres'
       - 'DATABASE_PORT=5432'
@@ -243,16 +243,16 @@ services:
     build:
       context: ./pokequest-web
       dockerfile: DOCKERFILE
+      args:
+        - "GOOGLE_CLIENT_ID=<INSERT_KEY>"
+        - "MISSION_MANAGEMENT_ADMIN=http://complex_mission_management_admin:9000"
+        - "MISSION_MANAGEMENT=http://complex_mission_management:9001"
+        - "POKEMON_MANAGEMENT=http://complex_pokemon_management:9002"
     image: <docker_id>/pokequest_web:pokequest
     restart: always
     depends_on: 
       - complex_mission_management
       - complex_mission_management_admin
       - complex_pokemon_management
-    environment:
-      - "GOOGLE_CLIENT_ID=<INSERT_KEY>"
-      - "MISSION_MANAGEMENT_ADMIN=http://complex_mission_management_admin:9000"
-      - "MISSION_MANAGEMENT=http://complex_mission_management:9001"
-      - "POKEMON_MANAGEMENT=http://complex_pokemon_management:9002"
     ports:
       - "3000:3000"
