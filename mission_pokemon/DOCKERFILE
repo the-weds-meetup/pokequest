@@ -3,11 +3,16 @@ FROM node:14.16.0-slim
 # Create app directory and cd inside
 WORKDIR /usr/src/app
 
+COPY package.json .
+COPY yarn.lock .
+
+# install all the dependencies
+RUN yarn install
+
 # copy all folder contents
 COPY . .
 
-# install all the dependencies and build the application
-RUN yarn install
+# build the application
 RUN yarn build
 
 CMD ["yarn", "start"]
