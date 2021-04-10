@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
 import axios from 'axios';
 
 import { useAppContext } from '../../context/state';
@@ -10,6 +9,7 @@ import SideNav from '../../components/SideNav';
 import MissionNav from '../../components/MissionNav';
 import AddButton from '../../components/AddMissionBtn';
 import QuestSection from '../../components/Quest/QuestSection';
+import QuestEmpty from '../../components/Quest/QuestEmpty';
 import Modal from '../../components/Modal/ModalAvailable';
 
 import { IQuest } from '../../interfaces';
@@ -53,6 +53,10 @@ const Quests: React.FC = () => {
     setSelectedQuest(undefined);
   };
 
+  const hasAvailable = useMemo(() => {
+    return availableQuest.length > 0;
+  }, [availableQuest]);
+
   return (
     <>
       <SEO title={'Available Quests'} />
@@ -64,12 +68,22 @@ const Quests: React.FC = () => {
 
           {adminMode && <AddButton />}
 
-          {availableQuest.length > 0 && (
+          {hasAvailable ? (
             <QuestSection
               title="Available"
               quests={availableQuest}
               setCurrentQuest={getQuestInfo}
             />
+          ) : (
+            <QuestEmpty>
+              <p>
+                No quests yet! Follow our{' '}
+                <a href={process.env.TWITTER_URL} target="_blank">
+                  Twitter
+                </a>{' '}
+                so you will be updated when a new quest has arrived!
+              </p>
+            </QuestEmpty>
           )}
 
           {showModal && (

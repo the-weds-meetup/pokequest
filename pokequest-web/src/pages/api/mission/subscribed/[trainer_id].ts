@@ -37,7 +37,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     } catch (error) {
       console.log('[WEB: mission/join/:id]', error.response.data);
-      res.status(418).send(error.response.data);
+      res.status(418).send({
+        ...error.response.data,
+        ongoing: [],
+        future: [],
+        completed: [],
+      });
     }
   }
 };

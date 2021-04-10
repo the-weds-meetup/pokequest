@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import SideNav from '../../components/SideNav';
 import MissionNav from '../../components/MissionNav';
 import Modal from '../../components/Modal/ModalAccepted';
 import QuestSection from '../../components/Quest/QuestSection';
+import QuestEmpty from '../../components/Quest/QuestEmpty';
 
 import { IQuest } from '../../interfaces';
 
@@ -35,6 +36,22 @@ const Quests: React.FC = () => {
     undefined
   );
 
+  const hasOngoing = useMemo(() => {
+    return ongoingQuest.length > 0;
+  }, [ongoingQuest]);
+
+  const hasFuture = useMemo(() => {
+    return futureQuest.length > 0;
+  }, [futureQuest]);
+
+  const hasCompleted = useMemo(() => {
+    return completedQuest.length > 0;
+  }, [completedQuest]);
+
+  const hasCards = useMemo(() => {
+    return hasOngoing || hasFuture;
+  }, [hasOngoing, hasFuture]);
+
   useEffect(() => {
     const getSubscribedQuest = async () => {
       return await axios
@@ -45,9 +62,8 @@ const Quests: React.FC = () => {
           setFutureQuest(data.future);
           setCompletedQuest(data.completed);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error.response.data));
     };
-
     getSubscribedQuest();
   }, []);
 
@@ -83,7 +99,7 @@ const Quests: React.FC = () => {
           <MissionNav />
           <div style={{ height: '48px' }} />
 
-          {ongoingQuest.length > 0 && (
+          {hasOngoing && (
             <QuestSection
               title="In Progress"
               quests={ongoingQuest}
@@ -91,7 +107,7 @@ const Quests: React.FC = () => {
             />
           )}
 
-          {futureQuest.length > 0 && (
+          {hasFuture && (
             <QuestSection
               title="Upcoming Quests"
               quests={futureQuest}
@@ -99,12 +115,19 @@ const Quests: React.FC = () => {
             />
           )}
 
-          {completedQuest.length > 0 && (
+          {hasCompleted && (
             <QuestSection
               title="Past Quests"
               quests={completedQuest}
               setCurrentQuest={getPastQuest}
             />
+          )}
+
+          {!hasCards && (
+            <QuestEmpty>
+              <p>No quests right now.</p>
+              <p>Check out Available Quests to participate in one</p>
+            </QuestEmpty>
           )}
 
           {showModal && (
