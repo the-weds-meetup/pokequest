@@ -2,13 +2,48 @@
 
 ## Services
 
-All services and Web are found within these ports
+A description of all the microservices used
 
-| Descriptions           | Ports       |
-|:----------------------:|:-----------:|
-| Simple Microservice    | 8000 - 8999 |
-| Complex Microservice   | 9000 - 9999 |
-| Web UI                 | 3000        |
+### Simple Microservices (Ports 8000 - 8999)
+
+> Below are the ports of the (atomic) microservices used. They are used to only communicate with the database tables of the same name
+
+| Services               | Ports      |
+|:----------------------:|:----------:|
+| Pokemon                |    8000    |
+| Mission                |    8001    |
+| Mission_Pokemon        |    8002    |
+| Trainer_Mission        |    8003    |
+| Trainer_Pokemon        |    8004    |
+| Trainer_Mission_Pokemon|    8005    |
+
+### Complex Microservices (Ports 9000 - 9999)
+
+> Below are the ports of the complex microservices used. They talk with the simpler microservices and combines the data before passing to the webUI
+
+| Services                | Description            | Ports      |
+|:-----------------------:|:----------------------:|:----------:|
+| Mission_Management_Admin| Manage the features use by the admin (Add mission) |    9000    |
+| Mission_Management      | Manage all the features of missions (Join, View)   |    9001    |
+| Pokemon_Management      | Handle Pokemon features (View Pokemon Count, Submit Pokemon)  |    9002    |
+
+### Web (Port 3000)
+
+> The front-end and the additional back-end of the web application. The back-end communicates with the complex microservices so that we do not have to reveal the port numbers of these microserivces to the public Internet in production
+
+| Services              | Ports      |
+|:---------------------:|:----------:|
+| Pokequest-Web         |    3000    |
+
+### Others
+
+> Database, RabbitMQ
+
+| Services                      | Ports   |
+|:-----------------------------:|:-------:|
+| Postgres                      | 5432    |
+| RabbitMQ (Main)               | 5672    |
+| RabbitMQ (Management Console) | 15672   |
 
 ## Development
 
@@ -22,21 +57,28 @@ git clone https://github.com/the-weds-meetup/pokequest.git
 cp docker-compose.yml.example docker-compose.yml
 
 # replace <docker_id> with your actual docker id
+# insert the required keys for Google OpenAuth and Twitter API keys
 
-# run the microservices
-docker-compose up --build
+# build the containers
+docker-compose build
 
-# run the web UI
-cd pokequest-web
-yarn
-yarn dev
+# run the containers
+docker-compose up
 ```
 
 ### Pre-requisites
 
 1. Docker
 
+1. [Google OpenAuth Client Key](https://developers.google.com/identity/protocols/oauth2)
+
+1. [Twitter Developer Account](https://developer.twitter.com/)
+
+### Localhost Development
+
 1. Node.js (v14)
+
+1. Python3
 
 ## Contribution
 
