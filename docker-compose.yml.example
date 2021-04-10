@@ -248,6 +248,7 @@ services:
         - "MISSION_MANAGEMENT_ADMIN=http://complex_mission_management_admin:9000"
         - "MISSION_MANAGEMENT=http://complex_mission_management:9001"
         - "POKEMON_MANAGEMENT=http://complex_pokemon_management:9002"
+        - "TWIITER_URL=<INSERT_KEY>"
     image: <docker_id>/pokequest_web:pokequest
     restart: always
     depends_on: 
