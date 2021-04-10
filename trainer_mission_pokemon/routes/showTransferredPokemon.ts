@@ -26,32 +26,35 @@ const showTransferredPokemon = async (
   _res: Response
 ): Promise<void> => {
   const { mission_id } = _req.params;
+  const isConnect = false;
 
   const query = {
     text: 'SELECT * FROM mission_trainer_pokemon WHERE mission_id = $1',
     values: [mission_id],
   };
-
   const client = new Client(connectionString);
-  await client.connect();
 
-  await client
-    .query(query)
-    .then((results) => {
+  try {
+    await client.connect();
+    await client.query(query).then((results) => {
       _res.status(201).send({
         time: Date.now(),
         data: results.rows,
       });
-    })
-    .catch((error) => {
-      console.log('[TRAINER_POKEMON_MISSION]:', error);
-      _res.status(418).send({
-        time: Date.now(),
-        server: 'trainer_pokemon_mission',
-        msg: error.message,
-      });
-    })
-    .finally(() => client.end());
+    });
+  } catch (error) {
+    console.log('[TRAINER_POKEMON_MISSION]:', error);
+    _res.status(418).send({
+      time: Date.now(),
+      server: 'trainer_pokemon_mission',
+      msg: error.message,
+    });
+  } finally {
+    // disconnect client if connected
+    if (isConnect) {
+      client.end();
+    }
+  }
 };
 
 export default showTransferredPokemon;

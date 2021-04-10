@@ -49,7 +49,10 @@ const updatePokemonStatus = async (
       isConnect = true;
     });
 
-    await client.query(query).then(() => {
+    await client.query(query).then((results) => {
+      if (results.rowCount === 0) {
+        throw { message: 'Record not found' };
+      }
       _res.status(201).send({
         time: Date.now(),
         data: 'Updated',
@@ -58,6 +61,7 @@ const updatePokemonStatus = async (
   } catch (error) {
     console.log('[TRAINER_POKEMON]:', error);
     _res.status(418).send({
+      time: Date.now(),
       server: server_name,
       msg: error.message,
     });

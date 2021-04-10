@@ -23,6 +23,7 @@ const connectionString = isProduction
 
 const submitPokemon = async (_req: Request, _res: Response): Promise<void> => {
   const { mission_id, inventory_id } = _req.params;
+  let isConnect = false;
 
   const query = {
     text:
@@ -31,22 +32,31 @@ const submitPokemon = async (_req: Request, _res: Response): Promise<void> => {
   };
 
   const client = new Client(connectionString);
-  await client.connect();
 
-  await client
-    .query(query)
-    .then(() => {
-      _res.status(201).send({ time: Date.now() });
-    })
-    .catch((error) => {
-      console.log('[Mission_Trainer_Pokemon]:', error);
-      _res.status(418).send({
+  try {
+    await client.connect().then(() => {
+      isConnect = true;
+    });
+
+    await client.query(query).then(() => {
+      _res.status(201).send({
         time: Date.now(),
-        server: 'trainer_pokemon_mission',
-        msg: error.message,
+        data: 'Added',
       });
-    })
-    .finally(() => client.end());
+    });
+  } catch (error) {
+    console.log('[TRAINER_POKEMON_MISSION]:', error);
+    _res.status(418).send({
+      time: Date.now(),
+      server: 'trainer_pokemon_mission',
+      msg: error.message,
+    });
+  } finally {
+    // disconnect client if connected
+    if (isConnect) {
+      client.end();
+    }
+  }
 };
 
 export default submitPokemon;
