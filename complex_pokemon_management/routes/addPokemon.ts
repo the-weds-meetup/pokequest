@@ -31,14 +31,12 @@ const addPokemon = async (_req: Request, _res: Response): Promise<void> => {
       .then((response) => response.data.data);
 
     // add pokemon_id to trainer_pokemon
-    await Promise.all(
-      pokemonList.map(async (pokemon) => {
-        const poke_id = pokemon.id;
-        await axios.post(
-          TRAINER_POKEMON_URL + `/inventory/add/${trainer_id}/${poke_id}`
-        );
-      })
-    );
+    for await (const pokemon of pokemonList) {
+      const poke_id = pokemon.id;
+      await axios.post(
+        TRAINER_POKEMON_URL + `/inventory/add/${trainer_id}/${poke_id}`
+      );
+    }
 
     _res.status(201).send({
       time: Date.now(),
