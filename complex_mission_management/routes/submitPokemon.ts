@@ -46,16 +46,25 @@ const submitPokemon = async (_req: Request, _res: Response): Promise<void> => {
       pokemon_list_keys.map(async (key) => {
         let count = pokemon_list[key];
 
-        // handle if user input more pokemon than what the database holds
-        if (count > inventorySort[key].count) {
-          count = inventorySort[key].count;
-        }
+        // ensures that pokemon id exist in user inventory
+        if (typeof inventorySort[key] !== 'undefined') {
+          // handle if user input more pokemon than what the database holds
+          if (count > inventorySort[key].count) {
+            count = inventorySort[key].count;
+          }
 
-        // loop through the inventory of consisting of pokemon of that id
-        // and update their status until count finishes
-        return inventorySort[key].inventory.slice(0, count);
+          // loop through the inventory of consisting of pokemon of that id
+          // and update their status until count finishes
+          return inventorySort[key].inventory.slice(0, count);
+        }
+        return [];
       })
-    );
+    ).catch(() => {
+      isUserFault = true;
+      throw { msg: 'You broke it, that is unexpected ' };
+    });
+
+    console.log('What will be send', pokemonSent);
 
     await Promise.all(
       pokemonSent.map(async (inventory_list) => {
@@ -86,7 +95,7 @@ const submitPokemon = async (_req: Request, _res: Response): Promise<void> => {
       _res.status(500).send({
         time: Date.now(),
         server: 'complex_mission_management',
-        msg: error.data,
+        msg: error.msg,
       });
     } else {
       _res.status(500).send({
