@@ -9,6 +9,7 @@ import SEO from '../../components/SEO';
 import SideNav from '../../components/SideNav';
 import { AutoCatcher } from '../../components/Button';
 import Modal from '../../components/Modal/ModalPokemon';
+import QuestEmpty from '../../components/Quest/QuestEmpty';
 
 import { IPokemon } from '../../interfaces';
 
@@ -22,6 +23,11 @@ const Content = styled.main`
   flex: 1;
   display: flex;
   flex-direction: column;
+
+  .error {
+    margin: 0 auto;
+    width: 90%;
+  }
 `;
 
 const PokeGrid = styled.div`
@@ -49,6 +55,7 @@ const PokeGrid = styled.div`
 const Quests: React.FC = () => {
   const { googleId } = useAppContext();
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [caughtPokemon, setCaughtPokemon] = useState<IPokemon[] | []>([]);
   const [trainerPokemon, setTrainerPokemon] = useState<InventoryProps[] | []>(
     []
@@ -66,6 +73,7 @@ const Quests: React.FC = () => {
       .then((response) => {
         const data = response.data;
         setTrainerPokemon(data.available.pokemon);
+        setIsLoading(false);
       })
       .catch((error) => console.log(error));
   };
@@ -99,7 +107,18 @@ const Quests: React.FC = () => {
         <Content>
           <AutoCatcher handleClick={handleCaught} />
 
-          {trainerPokemon.length > 0 ? (
+          {isLoading ? (
+            <>Loading...</>
+          ) : trainerPokemon.length === 0 ? (
+            <div className="error">
+              <QuestEmpty>
+                <p>
+                  No Pokemons in your inventory. Time to start your Pokemon
+                  Journey!
+                </p>
+              </QuestEmpty>
+            </div>
+          ) : (
             <PokeGrid>
               {trainerPokemon.map((pokemon) => (
                 <div key={pokemon.inventory_id} className="grid">
@@ -107,8 +126,6 @@ const Quests: React.FC = () => {
                 </div>
               ))}
             </PokeGrid>
-          ) : (
-            <>loading</>
           )}
 
           {showModal && (
