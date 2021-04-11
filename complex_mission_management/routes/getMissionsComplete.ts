@@ -1,6 +1,6 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { Request, Response, response } from 'express';
+import { Request, Response } from 'express';
 
 import { getMissionPokemon, getPokemon } from '../modules';
 

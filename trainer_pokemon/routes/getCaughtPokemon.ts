@@ -44,9 +44,6 @@ const getCaughtPokemon = async (
     });
 
     await client.query(query).then((results) => {
-      if (results.rowCount === 0) {
-        throw { message: 'Record not found' };
-      }
       _res.status(201).send({
         time: Date.now(),
         data: results.rows,
