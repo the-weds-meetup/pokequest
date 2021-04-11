@@ -55,7 +55,7 @@ const getMissionsComplete = async (
     );
 
     _res.status(201).send({
-      date: Date.now(),
+      time: Date.now(),
       data: ongoing,
     });
   } catch (error) {

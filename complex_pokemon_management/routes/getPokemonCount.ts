@@ -48,7 +48,7 @@ const groupInventoryById = async (
     console.log(pokemonCount);
 
     _res.status(201).send({
-      date: Date.now(),
+      time: Date.now(),
       data: {
         pokemon: pokemonCount,
       },

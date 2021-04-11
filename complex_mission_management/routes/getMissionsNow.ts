@@ -56,7 +56,7 @@ const getMissionsNow = async (_req: Request, _res: Response): Promise<void> => {
     );
 
     _res.status(201).send({
-      date: Date.now(),
+      time: Date.now(),
       data: ongoing,
     });
   } catch (error) {
