@@ -1,8 +1,8 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import styled from 'styled-components';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import { TabBar } from './';
+import { Title, TitleWrapper } from './styled';
 
 import { IQuest } from '../../../interfaces';
 
@@ -13,42 +13,6 @@ interface Props {
   handleClose: () => void;
   handleTabChange?: (index: number) => void;
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  border-bottom: #00000027 1px solid;
-
-  p {
-    margin: 0;
-    font-weight: 500;
-    color: #00000078;
-  }
-
-  .padding {
-    padding-bottom: 16px;
-  }
-`;
-
-const Title = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-
-  button {
-    height: inherit;
-    border: 0;
-    display: flex;
-    background-color: #fff;
-    cursor: pointer;
-  }
-
-  h1 {
-    margin: 0;
-    padding-bottom: 8px;
-  }
-`;
 
 const ModalHeader: React.FC<Props> = (props) => {
   const { quest, tabNames, currentIndex, handleTabChange, handleClose } = props;
@@ -126,7 +90,7 @@ const ModalHeader: React.FC<Props> = (props) => {
   }, [quest]);
 
   return (
-    <Wrapper>
+    <TitleWrapper>
       <Title>
         <h1>{title}</h1>
         <button onClick={handleClose}>
@@ -146,7 +110,7 @@ const ModalHeader: React.FC<Props> = (props) => {
           handleTabChange={handleTabChange}
         />
       )}
-    </Wrapper>
+    </TitleWrapper>
   );
 };
 

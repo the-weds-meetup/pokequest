@@ -16,11 +16,13 @@ const ModalWrapper = styled.div`
     width: 80%;
     height: auto;
     min-height: 300px;
+    max-height: 90%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 32px;
     border-radius: 8px;
+    overflow-y: auto;
   }
 
   @media only screen and (max-width: 600px) {
@@ -28,6 +30,7 @@ const ModalWrapper = styled.div`
       width: 100vw;
       height: 100vh;
       overflow-y: auto;
+      max-height: 100%;
     }
   }
 `;

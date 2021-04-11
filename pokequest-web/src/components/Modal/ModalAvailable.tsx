@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 
 import { useAppContext } from '../../context/state';
 import { ModalTitle, ModalTemplate, ModalBody } from './components';
+import { ButtonWrapper } from '../Button/styled';
 
 import { IQuest } from '../../interfaces';
 
@@ -12,26 +13,6 @@ interface Props {
   quest: IQuest;
   handleClose: () => void;
 }
-
-const JoinButton = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  padding-top: 32px;
-
-  button {
-    margin: 0 auto;
-    padding: 16px 32px;
-    min-width: 300px;
-
-    background-color: #037bff;
-    border-radius: 4px;
-    border: #00000027 1px solid;
-    color: white;
-    font-size: 1.2em;
-    cursor: pointer;
-  }
-`;
 
 const Modal: React.FC<Props> = (props) => {
   const { quest, handleClose } = props;
@@ -59,11 +40,11 @@ const Modal: React.FC<Props> = (props) => {
     <ModalTemplate>
       <ModalTitle quest={quest} handleClose={handleClose} />
       <ModalBody quest={quest} />
-      <JoinButton>
+      <ButtonWrapper>
         <button type="button" onClick={() => joinQuest()}>
           Join Quest
         </button>
-      </JoinButton>
+      </ButtonWrapper>
     </ModalTemplate>
   );
 };
