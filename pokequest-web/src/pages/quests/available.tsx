@@ -7,10 +7,11 @@ import DefaultLayout from '../../components/layouts/DefaultLayout';
 import SEO from '../../components/SEO';
 import SideNav from '../../components/SideNav';
 import MissionNav from '../../components/MissionNav';
-import AddButton from '../../components/AddMissionBtn';
+import { AddButton } from '../../components/Button';
 import QuestSection from '../../components/Quest/QuestSection';
 import QuestEmpty from '../../components/Quest/QuestEmpty';
 import Modal from '../../components/Modal/ModalAvailable';
+import ModalAddQuest from '../../components/Modal/ModalAdd';
 
 import { IQuest } from '../../interfaces';
 
@@ -28,20 +29,22 @@ const Content = styled.main`
 const Quests: React.FC = () => {
   const { adminMode, googleId } = useAppContext();
   const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [availableQuest, setAvailableQuest] = useState([]);
   const [selectedQuest, setSelectedQuest] = useState<IQuest | undefined>(
     undefined
   );
 
   useEffect(() => {
-    const getAvailableQuest = async () => {
-      return await axios
-        .get(`/api/mission/available/${googleId}`)
-        .then((response) => setAvailableQuest(response.data.available))
-        .catch((error) => console.log(error));
-    };
     getAvailableQuest();
   }, []);
+
+  const getAvailableQuest = async () => {
+    return await axios
+      .get(`/api/mission/available/${googleId}`)
+      .then((response) => setAvailableQuest(response.data.available))
+      .catch((error) => console.log(error));
+  };
 
   const getQuestInfo = (quest: IQuest) => {
     setSelectedQuest(quest);
@@ -51,6 +54,15 @@ const Quests: React.FC = () => {
   const closeModal = () => {
     setShowModal(false);
     setSelectedQuest(undefined);
+  };
+
+  const openAddModal = () => {
+    setShowAddModal(true);
+  };
+
+  const closeAddModal = () => {
+    getAvailableQuest();
+    setShowAddModal(false);
   };
 
   const hasAvailable = useMemo(() => {
@@ -66,7 +78,7 @@ const Quests: React.FC = () => {
           <MissionNav />
           <div style={{ height: '48px' }} />
 
-          {adminMode && <AddButton />}
+          {adminMode && <AddButton onOpen={openAddModal} />}
 
           {hasAvailable ? (
             <QuestSection
@@ -89,6 +101,8 @@ const Quests: React.FC = () => {
           {showModal && (
             <Modal quest={selectedQuest} handleClose={closeModal} />
           )}
+
+          {showAddModal && <ModalAddQuest handleClose={closeAddModal} />}
         </Content>
       </DefaultLayout>
     </>

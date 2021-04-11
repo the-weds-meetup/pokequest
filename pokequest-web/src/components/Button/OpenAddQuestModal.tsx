@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
 import { mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
 
@@ -27,15 +26,19 @@ const Wrapper = styled.button`
   }
 `;
 
-const AddButton: React.FC = () => {
-  const router = useRouter();
+interface Props {
+  onOpen: () => void;
+}
 
-  const _onClick = () => {
-    router.push('/quests/add');
+const AddButton: React.FC<Props> = (props) => {
+  const { onOpen } = props;
+
+  const handleOpen = () => {
+    onOpen();
   };
 
   return (
-    <Wrapper onClick={_onClick}>
+    <Wrapper onClick={handleOpen}>
       <Icon path={mdiPlus} size={1} horizontal vertical color="#00000087" />
       <span> Add a Quest</span>
     </Wrapper>
