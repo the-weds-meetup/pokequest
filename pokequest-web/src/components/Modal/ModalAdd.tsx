@@ -71,7 +71,6 @@ const Modal: React.FC<Props> = (props) => {
     return dateError || pokeSelectError;
   }, [dateError, pokeSelectError]);
 
-  console.log(pokeSelectError, dateError, submitDisabled);
   useEffect(() => {
     if (!adminMode) {
       handleClose();
