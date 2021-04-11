@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import styled from 'styled-components';
 import { GoogleLogout } from 'react-google-login';
 import Link from 'next/link';
@@ -21,6 +21,20 @@ const SideNavLink = styled.div`
 
   h1 {
     padding: 0 12px;
+  }
+
+  .custom {
+    padding-left: 4px;
+    div {
+      width: 98%;
+      padding: 12px;
+      font-size: 1.2rem;
+      border-radius: 8px;
+
+      :hover {
+        background-color: #ffffff56;
+      }
+    }
   }
 
   @media only screen and (max-width: 600px) {
@@ -148,6 +162,9 @@ const NavLinkInternals: React.FC = () => {
           <div style={activeStyle('/pokemon')}>Your Pokemon</div>
         </StyledLink>
       </Link>
+      <a className="custom" href={process.env.TWITTER_URL} target="_blank">
+        <div>Twitter</div>
+      </a>
       <div style={{ paddingTop: 24 }} />
     </>
   );
