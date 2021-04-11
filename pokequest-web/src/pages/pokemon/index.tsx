@@ -26,7 +26,7 @@ const Content = styled.main`
 
 const PokeGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   gap: 30px;
   grid-auto-flow: dense;
   padding: 32px;
@@ -39,6 +39,10 @@ const PokeGrid = styled.div`
   img {
     width: 80px;
     height: 80px;
+  }
+
+  @media only screen and (max-width: 720px) {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
   }
 `;
 

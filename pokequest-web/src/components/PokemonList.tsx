@@ -7,6 +7,10 @@ const PokeGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 20px;
   grid-auto-flow: dense;
+
+  @media only screen and (max-width: 720px) {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  }
 `;
 
 const PokemonItem = styled.label`
