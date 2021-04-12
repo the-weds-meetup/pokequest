@@ -16,7 +16,7 @@ export const AppWrapper: React.FC = (props) => {
   const [adminMode, setAdminMode] = useState(false);
   const [googleId, setGoogleId] = useState('');
   const [googleName, setGoogleName] = useState('');
-  const [isSideOpen, setSideOpen] = useState(true);
+  const [isSideOpen, setSideOpen] = useState(false);
 
   useEffect(() => {
     setAdminMode(sessionStorage.getItem('admin') === 'true');

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
 import axios from 'axios';
 
 import { useAppContext } from '../../context/state';

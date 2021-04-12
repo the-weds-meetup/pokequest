@@ -27,10 +27,10 @@ const DefaultLayout: React.FC = (props) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!googleName || !googleId) {
+    if (typeof window !== 'undefined' && (!googleName || !googleId)) {
       router.replace('/');
     }
-  });
+  }, []);
 
   return <Wrapper>{children}</Wrapper>;
 };

@@ -128,7 +128,7 @@ const SideNav: React.FC = () => {
       <h1 onClick={onAdminChange}>PokeQuest</h1>
       <NavLinkInternals />
       <GoogleLogout
-        clientId={`${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}`}
+        clientId={process.env.GOOGLE_CLIENT_ID}
         onLogoutSuccess={_handleLogout}
       />
     </SideNavLink>
