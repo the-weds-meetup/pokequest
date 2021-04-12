@@ -10,9 +10,14 @@ const MISSION_POKEMON_URL = `${process.env.MISSION_POKEMON_URL}`;
 let isServerFault = true;
 
 const addMission = async (_req: Request, _res: Response): Promise<void> => {
-  const { poke_array, start_time, end_time } = _req.body;
+  const { poke_array, start_time, end_time, is_admin } = _req.body;
 
   try {
+    if (!is_admin || typeof is_admin !== 'boolean') {
+      isServerFault = false;
+      throw { msg: 'Nice try.' };
+    }
+
     if (!poke_array || poke_array.length === 0) {
       isServerFault = false;
       throw { msg: 'Missing Pokemon' };

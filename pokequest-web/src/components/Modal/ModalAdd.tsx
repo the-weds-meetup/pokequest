@@ -126,6 +126,7 @@ const Modal: React.FC<Props> = (props) => {
       poke_array: pokemonSelect,
       start_time: startDate,
       end_time: endDate,
+      is_admin: adminMode,
     };
 
     // send response here
