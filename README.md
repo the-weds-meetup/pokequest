@@ -4,6 +4,8 @@
 
 A description of all the microservices used
 
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/11596410-72d3c403-3b86-4b37-b740-e86277e647c2?action=collection%2Ffork&collection-url=entityId%3D11596410-72d3c403-3b86-4b37-b740-e86277e647c2%26entityType%3Dcollection%26workspaceId%3D94061803-758a-49ad-aaac-d9e00725820f)
+
 ### Simple Microservices (Ports 8000 - 8999)
 
 > Below are the ports of the (atomic) microservices used. They are used to only communicate with the database tables of the same name
